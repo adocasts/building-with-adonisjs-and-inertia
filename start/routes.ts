@@ -10,3 +10,6 @@
 import router from '@adonisjs/core/services/router'
 router.on('/').renderInertia('home', { version: 6 })
 
+router.get('/register', async (ctx) => {
+  return ctx.inertia.render('auth/register', { stuff: 'here' })
+})

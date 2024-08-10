@@ -43,12 +43,15 @@
     "@types/luxon": "^3.4.2",
     "@types/node": "^20.14.5",
     "@vitejs/plugin-vue": "^5.1.2",
+    "autoprefixer": "^10.4.20",
     "eslint": "^8.57.0",
     "hot-hook": "^0.2.6",
     "pino-pretty": "^11.2.1",
     "prettier": "^3.3.2",
+    "tailwindcss": "^3.4.9",
     "ts-node": "^10.9.2",
     "typescript": "^5.4.5",
+    "unplugin-vue-components": "^0.27.3",
     "vite": "^5.3.1"
   },
   "dependencies": {
@@ -64,10 +67,16 @@
     "@inertiajs/vue3": "^1.2.0",
     "@vinejs/vine": "^2.1.0",
     "@vue/server-renderer": "^3.4.35",
+    "class-variance-authority": "^0.7.0",
+    "clsx": "^2.1.1",
     "edge.js": "^6.0.2",
+    "lucide-vue-next": "^0.427.0",
     "luxon": "^3.5.0",
     "pg": "^8.12.0",
+    "radix-vue": "^1.9.3",
     "reflect-metadata": "^0.2.2",
+    "tailwind-merge": "^2.4.0",
+    "tailwindcss-animate": "^1.0.7",
     "vue": "^3.4.35"
   },
   "hotHook": {

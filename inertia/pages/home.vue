@@ -14,5 +14,7 @@ defineProps<{ version: number }>()
       Learn more about AdonisJS and Inertia.js by visiting the
       <a href="https://docs.adonisjs.com/guides/inertia">AdonisJS documentation</a>.
     </span>
+
+    <Button>Example Button</Button>
   </div>
 </template>
