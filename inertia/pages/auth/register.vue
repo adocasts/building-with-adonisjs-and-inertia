@@ -1,7 +1,5 @@
 <script setup lang="ts">
-import type { SharedProps } from '@adonisjs/inertia/types'
-
-defineProps<{ stuff: string } & SharedProps>()
+defineProps<{ stuff: string }>()
 </script>
 
 <template>
