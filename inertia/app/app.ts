@@ -6,6 +6,7 @@ import { createSSRApp, h } from 'vue'
 import type { DefineComponent } from 'vue'
 import { createInertiaApp } from '@inertiajs/vue3'
 import { resolvePageComponent } from '@adonisjs/inertia/helpers'
+import { Link } from '@inertiajs/vue3'
 
 const appName = import.meta.env.VITE_APP_NAME || 'AdonisJS'
 
@@ -24,6 +25,7 @@ createInertiaApp({
   setup({ el, App, props, plugin }) {
     createSSRApp({ render: () => h(App, props) })
       .use(plugin)
+      .component('Link', Link)
       .mount(el)
   },
 })
