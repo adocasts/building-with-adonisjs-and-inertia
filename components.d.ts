@@ -9,5 +9,7 @@ declare module 'vue' {
   export interface GlobalComponents {
     AppHead: typeof import('./inertia/components/AppHead.vue')['default']
     Button: typeof import('./inertia/components/ui/button/Button.vue')['default']
+    Input: typeof import('./inertia/components/ui/input/Input.vue')['default']
+    Label: typeof import('./inertia/components/ui/label/Label.vue')['default']
   }
 }

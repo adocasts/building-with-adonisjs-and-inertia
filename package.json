@@ -67,6 +67,7 @@
     "@inertiajs/vue3": "^1.2.0",
     "@vinejs/vine": "^2.1.0",
     "@vue/server-renderer": "^3.4.35",
+    "@vueuse/core": "^11.0.3",
     "class-variance-authority": "^0.7.0",
     "clsx": "^2.1.1",
     "edge.js": "^6.0.2",

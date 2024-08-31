@@ -7,6 +7,7 @@
 |
 */
 
+import { registerValidator } from '#validators/auth'
 import router from '@adonisjs/core/services/router'
 
 let renderCount = 0
@@ -33,5 +34,7 @@ router.get('/login', async (ctx) => {
 })
 
 router.post('/register', async (ctx) => {
+  const data = await ctx.request.validateUsing(registerValidator)
+  console.log({ data })
   return ctx.response.redirect().back()
 })
