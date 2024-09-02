@@ -1,19 +1,30 @@
 <script setup lang="ts">
 import AuthLayout from '~/layouts/AuthLayout.vue'
-import { ref } from 'vue'
-import { router } from '@inertiajs/vue3'
+import { useForm } from '@inertiajs/vue3'
+import { Loader } from 'lucide-vue-next'
 
 defineOptions({ layout: AuthLayout })
 
-defineProps<{
-  errors: Record<string, string[]>
-}>()
-
-const form = ref({
+const form = useForm({
   fullName: '',
   email: '',
   password: '',
 })
+
+function onSubmit() {
+  form
+    .transform((data) => ({
+      ...data,
+      fullName: data.fullName + ' Example',
+    }))
+    .post('/register', {
+      preserveScroll: true,
+      onSuccess: () => {
+        form.reset('fullName')
+        form.setError('fullName', 'This is some error')
+      },
+    })
+}
 </script>
 
 <template>
@@ -29,14 +40,14 @@ const form = ref({
     </p>
   </div>
 
-  <form class="grid gap-3" @submit.prevent="router.post('/register', form)">
+  <form class="grid gap-3 pt-32" @submit.prevent="onSubmit">
     <div class="grid gap-1">
       <Label class="grid gap-1">
         <span>Full Name</span>
         <Input type="text" v-model="form.fullName" />
       </Label>
-      <div v-if="errors.fullName" class="text-red-500 text-sm">
-        {{ errors.fullName.join(', ') }}
+      <div v-if="form.errors.fullName" class="text-red-500 text-sm">
+        {{ form.errors.fullName }}
       </div>
     </div>
 
@@ -45,8 +56,8 @@ const form = ref({
         <span>Email</span>
         <Input type="email" v-model="form.email" />
       </Label>
-      <div v-if="errors.email" class="text-red-500 text-sm">
-        {{ errors.email.join(', ') }}
+      <div v-if="form.errors.email" class="text-red-500 text-sm">
+        {{ form.errors.email }}
       </div>
     </div>
 
@@ -55,11 +66,14 @@ const form = ref({
         <span>Password</span>
         <Input type="password" v-model="form.password" />
       </Label>
-      <div v-if="errors.password" class="text-red-500 text-sm">
-        {{ errors.password.join(', ') }}
+      <div v-if="form.errors.password" class="text-red-500 text-sm">
+        {{ form.errors.password }}
       </div>
     </div>
 
-    <Button type="submit"> Register </Button>
+    <Button type="submit" :disabled="form.processing">
+      <Loader v-if="form.processing" class="mr-2 h-4 w-4 animate-spin" />
+      Register
+    </Button>
   </form>
 </template>
