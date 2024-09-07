@@ -10,21 +10,6 @@ const form = useForm({
   email: '',
   password: '',
 })
-
-function onSubmit() {
-  form
-    .transform((data) => ({
-      ...data,
-      fullName: data.fullName + ' Example',
-    }))
-    .post('/register', {
-      preserveScroll: true,
-      onSuccess: () => {
-        form.reset('fullName')
-        form.setError('fullName', 'This is some error')
-      },
-    })
-}
 </script>
 
 <template>
@@ -40,16 +25,16 @@ function onSubmit() {
     </p>
   </div>
 
-  <form class="grid gap-3 pt-32" @submit.prevent="onSubmit">
-    <div class="grid gap-1">
-      <Label class="grid gap-1">
-        <span>Full Name</span>
-        <Input type="text" v-model="form.fullName" />
-      </Label>
-      <div v-if="form.errors.fullName" class="text-red-500 text-sm">
-        {{ form.errors.fullName }}
-      </div>
-    </div>
+  <form
+    class="grid gap-3"
+    @submit.prevent="form.post('/register', { onSuccess: () => form.reset() })"
+  >
+    <FormInput
+      label="Full Name"
+      v-model="form.fullName"
+      :error="form.errors.fullName"
+      :disabled="form.processing"
+    />
 
     <div class="grid gap-1">
       <Label class="grid gap-1">
