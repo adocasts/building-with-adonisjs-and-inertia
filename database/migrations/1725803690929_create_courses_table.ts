@@ -12,24 +12,9 @@ export default class extends BaseSchema {
         .references('organizations.id')
         .onDelete('CASCADE')
         .notNullable()
-      table
-        .integer('access_level_id')
-        .unsigned()
-        .references('access_levels.id')
-        .onDelete('CASCADE')
-        .notNullable()
-      table
-        .integer('difficulty_id')
-        .unsigned()
-        .references('difficulties.id')
-        .onDelete('CASCADE')
-        .notNullable()
-      table
-        .integer('status_id')
-        .unsigned()
-        .references('statuses.id')
-        .onDelete('CASCADE')
-        .notNullable()
+      table.integer('access_level_id').unsigned().references('access_levels.id').notNullable()
+      table.integer('difficulty_id').unsigned().references('difficulties.id').notNullable()
+      table.integer('status_id').unsigned().references('statuses.id').notNullable()
 
       table.string('name', 150).notNullable()
       table.text('notes')

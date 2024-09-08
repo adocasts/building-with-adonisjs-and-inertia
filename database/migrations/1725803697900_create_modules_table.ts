@@ -18,12 +18,7 @@ export default class extends BaseSchema {
         .references('courses.id')
         .onDelete('CASCADE')
         .notNullable()
-      table
-        .integer('status_id')
-        .unsigned()
-        .references('statuses.id')
-        .onDelete('CASCADE')
-        .notNullable()
+      table.integer('status_id').unsigned().references('statuses.id').notNullable()
 
       table.string('name', 100).notNullable()
       table.text('notes')
