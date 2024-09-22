@@ -34,7 +34,10 @@ router.get('/login', async (ctx) => {
 })
 
 router.post('/register', async (ctx) => {
-  const data = await ctx.request.validateUsing(registerValidator)
-  console.log({ data })
+  // const data = await ctx.request.validateUsing(registerValidator)
+  // console.log({ data })
+
+  ctx.session.flash('success', 'This is a message from AdonisJS')
+
   return ctx.response.redirect().back()
 })

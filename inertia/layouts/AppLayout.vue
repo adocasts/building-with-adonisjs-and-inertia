@@ -5,6 +5,7 @@ import { UserCircle } from 'lucide-vue-next'
 
 const props = defineProps<{
   user: UserDto
+  messages: Record<string, string | Record<string, string>>
 }>()
 </script>
 
@@ -48,5 +49,7 @@ const props = defineProps<{
     >
       <slot />
     </main>
+
+    <ToastManager :messages="messages" />
   </div>
 </template>

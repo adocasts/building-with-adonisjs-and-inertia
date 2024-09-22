@@ -35,5 +35,7 @@ declare module 'vue' {
     SheetHeader: typeof import('./inertia/components/ui/sheet/SheetHeader.vue')['default']
     SheetTitle: typeof import('./inertia/components/ui/sheet/SheetTitle.vue')['default']
     SheetTrigger: typeof import('./inertia/components/ui/sheet/SheetTrigger.vue')['default']
+    Sonner: typeof import('./inertia/components/ui/sonner/Sonner.vue')['default']
+    ToastManager: typeof import('./inertia/components/ToastManager.vue')['default']
   }
 }

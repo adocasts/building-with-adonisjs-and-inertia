@@ -81,7 +81,8 @@
     "reflect-metadata": "^0.2.2",
     "tailwind-merge": "^2.4.0",
     "tailwindcss-animate": "^1.0.7",
-    "vue": "^3.4.35"
+    "vue": "^3.4.35",
+    "vue-sonner": "^1.1.5"
   },
   "hotHook": {
     "boundaries": [
