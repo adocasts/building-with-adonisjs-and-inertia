@@ -7,37 +7,15 @@
 |
 */
 
-import { registerValidator } from '#validators/auth'
+const RegisterController = () => import('#controllers/auth/register_controller')
 import router from '@adonisjs/core/services/router'
-
-let renderCount = 0
-let refreshCount1 = 0
-let refreshCount2 = 0
-let lazyCount = 0
+import { middleware } from './kernel.js'
 
 router.on('/').renderInertia('home', { version: 6 })
 
-router.get('/register', async (ctx) => {
-  ctx.inertia.share({
-    sharedFromRoute: true,
-  })
-  return ctx.inertia.render('auth/register', { stuff: 'here' })
-})
+router.get('/register', [RegisterController, 'show']).as('register.show').use(middleware.guest())
+router.post('/register', [RegisterController, 'store']).as('register.store').use(middleware.guest())
 
 router.get('/login', async (ctx) => {
-  return ctx.inertia.render('auth/login', {
-    renderCount: ++renderCount,
-    refreshCount1: () => ++refreshCount1,
-    refreshCount2: () => ++refreshCount2,
-    lazyCount: ctx.inertia.lazy(() => ++lazyCount),
-  })
-})
-
-router.post('/register', async (ctx) => {
-  // const data = await ctx.request.validateUsing(registerValidator)
-  // console.log({ data })
-
-  ctx.session.flash('success', 'This is a message from AdonisJS')
-
-  return ctx.response.redirect().back()
+  return ctx.inertia.render('auth/login')
 })
