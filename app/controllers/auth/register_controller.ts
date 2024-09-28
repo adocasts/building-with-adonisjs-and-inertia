@@ -9,11 +9,13 @@ export default class RegisterController {
   }
 
   @inject()
-  async store({ request, response }: HttpContext, webRegister: WebRegister) {
+  async store({ request, response, session }: HttpContext, webRegister: WebRegister) {
     const data = await request.validateUsing(registerValidator)
 
     // register the user
     await webRegister.handle({ data })
+
+    session.flash('success', 'Welcome to PlotMyCourse')
 
     return response.redirect().toPath('/')
   }
