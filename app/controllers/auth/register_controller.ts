@@ -17,6 +17,6 @@ export default class RegisterController {
 
     session.flash('success', 'Welcome to PlotMyCourse')
 
-    return response.redirect().toPath('/')
+    return response.redirect().toRoute('organizations.create')
   }
 }
