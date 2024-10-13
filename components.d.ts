@@ -7,8 +7,12 @@ export {}
 /* prettier-ignore */
 declare module 'vue' {
   export interface GlobalComponents {
+    Alert: typeof import('./inertia/components/ui/alert/Alert.vue')['default']
+    AlertDescription: typeof import('./inertia/components/ui/alert/AlertDescription.vue')['default']
+    AlertTitle: typeof import('./inertia/components/ui/alert/AlertTitle.vue')['default']
     AppHead: typeof import('./inertia/components/AppHead.vue')['default']
     Button: typeof import('./inertia/components/ui/button/Button.vue')['default']
+    Checkbox: typeof import('./inertia/components/ui/checkbox/Checkbox.vue')['default']
     DropdownMenu: typeof import('./inertia/components/ui/dropdown-menu/DropdownMenu.vue')['default']
     DropdownMenuCheckboxItem: typeof import('./inertia/components/ui/dropdown-menu/DropdownMenuCheckboxItem.vue')['default']
     DropdownMenuContent: typeof import('./inertia/components/ui/dropdown-menu/DropdownMenuContent.vue')['default']

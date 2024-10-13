@@ -28,7 +28,15 @@ const internalValue = computed({
   <div class="grid gap-1">
     <Label class="grid gap-1">
       <span>{{ label }}</span>
-      <Input :type="type" v-model="internalValue" :disabled="disabled" :required="required" />
+
+      <slot v-if="type === 'group'" />
+      <Input
+        v-else
+        v-model="internalValue"
+        :type="type"
+        :disabled="disabled"
+        :required="required"
+      />
     </Label>
     <div v-if="error" class="text-red-500 text-sm">
       {{ error }}

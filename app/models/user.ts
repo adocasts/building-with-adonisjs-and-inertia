@@ -7,6 +7,7 @@ import EmailHistory from './email_history.js'
 import type { HasMany, ManyToMany } from '@adonisjs/lucid/types/relations'
 import PasswordResetToken from './password_reset_token.js'
 import Organization from './organization.js'
+import { DbRememberMeTokensProvider } from '@adonisjs/auth/session'
 
 const AuthFinder = withAuthFinder(() => hash.use('scrypt'), {
   uids: ['email'],
@@ -14,6 +15,8 @@ const AuthFinder = withAuthFinder(() => hash.use('scrypt'), {
 })
 
 export default class User extends compose(BaseModel, AuthFinder) {
+  static rememberMeTokens = DbRememberMeTokensProvider.forModel(User)
+
   @column({ isPrimary: true })
   declare id: number
 

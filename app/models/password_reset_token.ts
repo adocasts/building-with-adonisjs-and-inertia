@@ -24,4 +24,8 @@ export default class PasswordResetToken extends BaseModel {
 
   @belongsTo(() => User)
   declare user: BelongsTo<typeof User>
+
+  get isValid() {
+    return this.expiresAt > DateTime.now()
+  }
 }
