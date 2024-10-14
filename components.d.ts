@@ -31,6 +31,7 @@ declare module 'vue' {
     Input: typeof import('./inertia/components/ui/input/Input.vue')['default']
     Label: typeof import('./inertia/components/ui/label/Label.vue')['default']
     Navigation: typeof import('./inertia/components/Navigation.vue')['default']
+    OrganizationSelect: typeof import('./inertia/components/OrganizationSelect.vue')['default']
     Sheet: typeof import('./inertia/components/ui/sheet/Sheet.vue')['default']
     SheetClose: typeof import('./inertia/components/ui/sheet/SheetClose.vue')['default']
     SheetContent: typeof import('./inertia/components/ui/sheet/SheetContent.vue')['default']

@@ -29,7 +29,7 @@ defineProps<{
             </svg>
           </Link>
         </div>
-        <div class="flex flex-1 justify-end gap-4">
+        <div v-if="!$page.url.includes('/organizations')" class="flex flex-1 justify-end gap-4">
           <Link href="/register" class="text-sm font-semibold leading-6 text-slate-900">
             Register
           </Link>

@@ -6,10 +6,10 @@ import router from '@adonisjs/core/services/router'
 /* prettier-ignore-start */
 /* eslint-disable */
 
-router.on('/').renderInertia('home', { version: 6 })
 
 router.group(() => {
-
+  
+  router.on('/').renderInertia('home', { version: 6 }).use(middleware.organization())
   router.get('/organizations/create', [OrganizationsController, 'create']).as('organizations.create')
   router.post('/organizations', [OrganizationsController, 'store']).as('organizations.store')
 

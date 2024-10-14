@@ -1,3 +1,5 @@
+export const activeCookieName = 'active_organization'
+
 export const defaults = {
   accessLevel: [
     {
