@@ -1,8 +1,13 @@
+import SetActiveOrganization from '#actions/organizations/http/set_active_organization'
 import StoreOrganization from '#actions/organizations/store_organization'
 import { organizationValidator } from '#validators/organization'
+import { inject } from '@adonisjs/core'
 import type { HttpContext } from '@adonisjs/core/http'
 
+@inject()
 export default class OrganizationsController {
+  constructor(protected setActiveOrganization: SetActiveOrganization) {}
+
   /**
    * Display form to create a new record
    */
@@ -19,6 +24,14 @@ export default class OrganizationsController {
       user: auth.use('web').user!,
       data,
     })
+
+    this.setActiveOrganization.handle({ id: organization.id })
+
+    return response.redirect().toPath('/')
+  }
+
+  async active({ response, params }: HttpContext) {
+    this.setActiveOrganization.handle({ id: params.id })
 
     return response.redirect().toPath('/')
   }
