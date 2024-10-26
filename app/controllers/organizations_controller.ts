@@ -1,5 +1,6 @@
 import SetActiveOrganization from '#actions/organizations/http/set_active_organization'
 import StoreOrganization from '#actions/organizations/store_organization'
+import UpdateOrganization from '#actions/organizations/update_organization'
 import { organizationValidator } from '#validators/organization'
 import { inject } from '@adonisjs/core'
 import type { HttpContext } from '@adonisjs/core/http'
@@ -37,19 +38,19 @@ export default class OrganizationsController {
   }
 
   /**
-   * Show individual record
-   */
-  async show({ params }: HttpContext) {}
-
-  /**
-   * Edit individual record
-   */
-  async edit({ params }: HttpContext) {}
-
-  /**
    * Handle form submission for the edit action
    */
-  async update({ params, request }: HttpContext) {}
+  async update({ params, request, response, auth }: HttpContext) {
+    const data = await request.validateUsing(organizationValidator)
+
+    await UpdateOrganization.handle({
+      user: auth.user!,
+      id: params.id,
+      data,
+    })
+
+    return response.redirect().back()
+  }
 
   /**
    * Delete record

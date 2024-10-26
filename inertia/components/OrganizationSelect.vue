@@ -3,6 +3,7 @@ import OrganizationDto from '#dtos/organization'
 import { router, useForm } from '@inertiajs/vue3'
 import { ChevronsUpDown } from 'lucide-vue-next'
 import { ref, watchEffect } from 'vue'
+import { useResourceActions } from '~/composables/resource_actions'
 
 const props = defineProps<{
   organization: OrganizationDto
@@ -10,8 +11,7 @@ const props = defineProps<{
 }>()
 
 const organizationId = ref(props.organization.id.toString())
-const isDialogOpen = ref(false)
-const dialogForm = useForm({
+const { form, dialog, onSuccess } = useResourceActions<OrganizationDto>()({
   name: '',
 })
 
@@ -19,15 +19,6 @@ watchEffect(() => (organizationId.value = props.organization.id.toString()))
 
 function onOrganizationChange(activeId: string) {
   router.get(`/organizations/${activeId}`)
-}
-
-function onSubmit() {
-  dialogForm.post('/organizations', {
-    onSuccess: () => {
-      dialogForm.reset()
-      isDialogOpen.value = false
-    },
-  })
 }
 </script>
 
@@ -56,16 +47,21 @@ function onSubmit() {
 
       <DropdownMenuSeparator />
 
-      <DropdownMenuItem @click="isDialogOpen = true">Add Organization</DropdownMenuItem>
+      <DropdownMenuItem @click="dialog.open(organization, { name: organization.name })">
+        Edit {{ organization.name }}
+      </DropdownMenuItem>
+      <DropdownMenuItem @click="dialog.open()">Add Organization</DropdownMenuItem>
     </DropdownMenuContent>
   </DropdownMenu>
 
   <FormDialog
     resource="Organization"
-    v-model:open="isDialogOpen"
-    :processing="dialogForm.processing"
-    @submit="onSubmit"
+    v-model:open="dialog.isOpen"
+    :editing="dialog.resource?.id"
+    :processing="form.processing"
+    @create="form.post('/organizations', { onSuccess })"
+    @update="form.put(`/organizations/${organization.id}`, { onSuccess })"
   >
-    <FormInput label="Name" v-model="dialogForm.name" :error="dialogForm.errors.name" />
+    <FormInput label="Name" v-model="form.name" :error="form.errors.name" />
   </FormDialog>
 </template>
