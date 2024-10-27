@@ -1,3 +1,4 @@
+import DestroyOrganization from '#actions/organizations/destroy_organization'
 import SetActiveOrganization from '#actions/organizations/http/set_active_organization'
 import StoreOrganization from '#actions/organizations/store_organization'
 import UpdateOrganization from '#actions/organizations/update_organization'
@@ -55,5 +56,14 @@ export default class OrganizationsController {
   /**
    * Delete record
    */
-  async destroy({ params }: HttpContext) {}
+  async destroy({ params, response, session, auth }: HttpContext) {
+    const organization = await DestroyOrganization.handle({
+      user: auth.user!,
+      id: params.id,
+    })
+
+    session.flash('success', `Your ${organization.name} has been deleted`)
+
+    return response.redirect().toPath('/')
+  }
 }

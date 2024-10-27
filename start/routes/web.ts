@@ -14,5 +14,6 @@ router.group(() => {
   router.post('/organizations', [OrganizationsController, 'store']).as('organizations.store')
   router.put('/organizations/:id', [OrganizationsController, 'update']).as('organizations.update')
   router.get('/organizations/:id', [OrganizationsController, 'active']).as('organizations.active')
+  router.delete('/organizations/:id', [OrganizationsController, 'destroy']).as('organizations.destroy')
 
 }).use(middleware.auth())

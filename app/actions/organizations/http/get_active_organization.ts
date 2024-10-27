@@ -11,17 +11,22 @@ export default class GetActiveOrganization {
 
   async handle() {
     const activeId = this.ctx.organizationId
-    const organization = await this.ctx.auth
-      .use('web')
-      .user!.related('organizations')
-      .query()
+    let organization = await this.#query()
       .if(activeId, (query) => query.where('organizations.id', activeId!))
-      .firstOrFail()
+      .first()
+
+    if (!organization) {
+      organization = await this.#query().firstOrFail()
+    }
 
     if (!activeId || organization.id !== activeId) {
       this.setActiveOrganization.handle({ id: organization.id })
     }
 
     return organization
+  }
+
+  #query() {
+    return this.ctx.auth.use('web').user!.related('organizations').query()
   }
 }

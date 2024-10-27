@@ -11,7 +11,7 @@ const props = defineProps<{
 }>()
 
 const organizationId = ref(props.organization.id.toString())
-const { form, dialog, onSuccess } = useResourceActions<OrganizationDto>()({
+const { form, dialog, destroy, onSuccess } = useResourceActions<OrganizationDto>()({
   name: '',
 })
 
@@ -50,6 +50,12 @@ function onOrganizationChange(activeId: string) {
       <DropdownMenuItem @click="dialog.open(organization, { name: organization.name })">
         Edit {{ organization.name }}
       </DropdownMenuItem>
+      <DropdownMenuItem @click="destroy.open(organization)">
+        Delete {{ organization.name }}
+      </DropdownMenuItem>
+
+      <DropdownMenuSeparator />
+
       <DropdownMenuItem @click="dialog.open()">Add Organization</DropdownMenuItem>
     </DropdownMenuContent>
   </DropdownMenu>
@@ -64,4 +70,14 @@ function onOrganizationChange(activeId: string) {
   >
     <FormInput label="Name" v-model="form.name" :error="form.errors.name" />
   </FormDialog>
+
+  <ConfirmDestroyDialog
+    v-model:open="destroy.isOpen"
+    title="Delete Organization?"
+    :action-href="`/organizations/${destroy.resource?.id}`"
+  >
+    Are you sure you'd like to delete your
+    <strong>{{ destroy.resource?.name }}</strong> organization? All data associated with this
+    organization, including courses and lessons, will be deleted forever.
+  </ConfirmDestroyDialog>
 </template>
