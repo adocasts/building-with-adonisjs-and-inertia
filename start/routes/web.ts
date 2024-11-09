@@ -23,5 +23,6 @@ router.group(() => {
 
   router.get('/difficulties', [DifficultiesController, 'index']).as('difficulties.index')
   router.post('/difficulties', [DifficultiesController, 'store']).as('diffiuclties.store')
+  router.put('/difficulties/:id', [DifficultiesController, 'update']).as('difficulties.update')
 
 }).use([middleware.auth(), middleware.organization()])

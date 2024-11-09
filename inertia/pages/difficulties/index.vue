@@ -1,7 +1,7 @@
 <script setup lang="ts">
 import DifficultyDto from '#dtos/difficulty'
 import OrganizationDto from '#dtos/organization'
-import { Plus } from 'lucide-vue-next'
+import { Pencil, Plus } from 'lucide-vue-next'
 import { ref, watchEffect } from 'vue'
 import { useResourceActions } from '~/composables/resource_actions'
 
@@ -17,6 +17,13 @@ const { form, dialog, destroy, onSuccess } = useResourceActions<DifficultyDto>()
 })
 
 watchEffect(() => (list.value = props.difficulties))
+
+function onEdit(resource: DifficultyDto) {
+  dialog.value.open(resource, {
+    name: resource.name,
+    color: resource.color,
+  })
+}
 </script>
 
 <template>
@@ -46,14 +53,22 @@ watchEffect(() => (list.value = props.difficulties))
           <span class="font-bold">{{ item.name }}</span>
           <span v-if="item.isDefault" class="text-sm text-slate-400">(Default)</span>
         </div>
+
+        <div class="flex gap-2 opacity-0 group-hover:opacity-100 duration-300">
+          <Button size="xs" @click="onEdit(item)">
+            <Pencil class="w-3 h-3" aria-label="Edit Difficulty" />
+          </Button>
+        </div>
       </li>
     </ul>
 
     <FormDialog
       resource="Difficulty"
       v-model:open="dialog.isOpen"
+      :editing="dialog.resource?.id"
       :processing="form.processing"
       @create="form.post('/difficulties', { onSuccess })"
+      @update="form.put(`/difficulties/${dialog.resource?.id}`, { onSuccess })"
     >
       <FormInput label="Name" v-model="form.name" :error="form.errors.name" />
       <FormInput type="color" label="Color" v-model="form.color" :error="form.errors.color" />
