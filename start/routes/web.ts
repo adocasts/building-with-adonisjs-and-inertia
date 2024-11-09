@@ -1,4 +1,5 @@
 const OrganizationsController = () => import('#controllers/organizations_controller')
+const DifficultiesController = () => import('#controllers/difficulties_controller')
 import { middleware } from '#start/kernel'
 import router from '@adonisjs/core/services/router'
 
@@ -17,3 +18,10 @@ router.group(() => {
   router.delete('/organizations/:id', [OrganizationsController, 'destroy']).as('organizations.destroy')
 
 }).use(middleware.auth())
+
+router.group(() => {
+
+  router.get('/difficulties', [DifficultiesController, 'index']).as('difficulties.index')
+  router.post('/difficulties', [DifficultiesController, 'store']).as('diffiuclties.store')
+
+}).use([middleware.auth(), middleware.organization()])

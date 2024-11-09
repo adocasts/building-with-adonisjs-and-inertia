@@ -30,6 +30,15 @@ const internalValue = computed({
       <span>{{ label }}</span>
 
       <slot v-if="type === 'group'" />
+      <div v-else-if="type === 'color'" class="relative w-full items-center">
+        <input
+          v-model="internalValue"
+          type="color"
+          class="absolute start-2 inset-y-2 w-6 h-6 rounded"
+          :disabled="disabled"
+        />
+        <Input v-model="internalValue" class="pl-10" :disabled="disabled" :required="required" />
+      </div>
       <Input
         v-else
         v-model="internalValue"

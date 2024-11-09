@@ -49,4 +49,16 @@ export default class Organization extends BaseModel {
     pivotColumns: ['role_id'],
   })
   declare users: ManyToMany<typeof User>
+
+  getDifficulties() {
+    return (<Organization>this).related('difficulties').query().orderBy('order')
+  }
+
+  getAccessLevels() {
+    return (<Organization>this).related('accessLevels').query().orderBy('order')
+  }
+
+  getStatuses() {
+    return (<Organization>this).related('statuses').query().orderBy('order')
+  }
 }
