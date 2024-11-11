@@ -39,6 +39,21 @@ const internalValue = computed({
         />
         <Input v-model="internalValue" class="pl-10" :disabled="disabled" :required="required" />
       </div>
+      <Select
+        v-else-if="type === 'select'"
+        v-model="internalValue"
+        :disabled="disabled"
+        :required="required"
+      >
+        <SelectTrigger>
+          <slot name="trigger">
+            <SelectValue :placeholder="placeholder" />
+          </slot>
+        </SelectTrigger>
+        <SelectContent>
+          <slot />
+        </SelectContent>
+      </Select>
       <Input
         v-else
         v-model="internalValue"

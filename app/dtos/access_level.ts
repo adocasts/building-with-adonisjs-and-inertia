@@ -16,6 +16,8 @@ export default class AccessLevelDto extends BaseModelDto {
   declare organizationId: number
   declare organization: OrganizationDto | null
 
+  declare meta: Record<string, any>
+
   constructor(accessLevel?: AccessLevel) {
     super()
 
@@ -31,5 +33,7 @@ export default class AccessLevelDto extends BaseModelDto {
 
     this.organizationId = accessLevel.organizationId
     this.organization = accessLevel.organization && new OrganizationDto(accessLevel.organization)
+
+    this.meta = accessLevel.$extras
   }
 }

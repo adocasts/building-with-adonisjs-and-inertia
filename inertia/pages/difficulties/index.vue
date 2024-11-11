@@ -1,8 +1,8 @@
 <script setup lang="ts">
 import DifficultyDto from '#dtos/difficulty'
 import OrganizationDto from '#dtos/organization'
-import { Pencil, Plus } from 'lucide-vue-next'
-import { ref, watchEffect } from 'vue'
+import { Pencil, Plus, Trash2 } from 'lucide-vue-next'
+import { computed, ref, watchEffect } from 'vue'
 import { useResourceActions } from '~/composables/resource_actions'
 
 const props = defineProps<{
@@ -16,12 +16,23 @@ const { form, dialog, destroy, onSuccess } = useResourceActions<DifficultyDto>()
   color: '#818cf8',
 })
 
+const replacementOptions = computed(() => {
+  return props.difficulties.filter((item) => item.id !== destroy.value.resource?.id)
+})
+
 watchEffect(() => (list.value = props.difficulties))
 
 function onEdit(resource: DifficultyDto) {
   dialog.value.open(resource, {
     name: resource.name,
     color: resource.color,
+  })
+}
+
+function onDestroyShow(resource: DifficultyDto) {
+  const replacement = replacementOptions.value.at(0)
+  destroy.value.open(resource, {
+    replacementId: replacement?.id.toString(),
   })
 }
 </script>
@@ -58,6 +69,10 @@ function onEdit(resource: DifficultyDto) {
           <Button size="xs" @click="onEdit(item)">
             <Pencil class="w-3 h-3" aria-label="Edit Difficulty" />
           </Button>
+
+          <Button size="xs" variant="destructive" @click="onDestroyShow(item)">
+            <Trash2 class="w-3 h-3" aria-label="Delete Difficulty" />
+          </Button>
         </div>
       </li>
     </ul>
@@ -73,5 +88,33 @@ function onEdit(resource: DifficultyDto) {
       <FormInput label="Name" v-model="form.name" :error="form.errors.name" />
       <FormInput type="color" label="Color" v-model="form.color" :error="form.errors.color" />
     </FormDialog>
+
+    <ConfirmDestroyDialog
+      v-model:open="destroy.isOpen"
+      title="Delete Difficulty?"
+      :action-href="`/difficulties/${destroy.resource?.id}`"
+      :action-data="destroy.data"
+    >
+      <div v-if="destroy.resource?.meta.courses_count != 0">
+        What difficulty would you like to assign the
+        {{ destroy.resource?.meta.courses_count }} courses using {{ destroy.resource?.name }}
+
+        <FormInput
+          type="select"
+          label="Difficulty"
+          v-model="destroy.data.replacementId"
+          class="mt-4"
+        >
+          <SelectItem v-for="item in replacementOptions" :key="item.id" :value="item.id.toString()">
+            {{ item.name }}
+          </SelectItem>
+        </FormInput>
+      </div>
+      <div v-else>
+        Are you sure you'd like to delete your
+        <strong>{{ destroy.resource?.name }}</strong> difficulty? No courses are currently using
+        this difficutly
+      </div>
+    </ConfirmDestroyDialog>
   </div>
 </template>

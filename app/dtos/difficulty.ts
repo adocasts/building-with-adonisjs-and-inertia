@@ -16,6 +16,8 @@ export default class DifficultyDto extends BaseModelDto {
   declare organizationId: number
   declare organization: OrganizationDto | null
 
+  declare meta: Record<string, any>
+
   constructor(difficulty?: Difficulty) {
     super()
 
@@ -31,5 +33,7 @@ export default class DifficultyDto extends BaseModelDto {
 
     this.organizationId = difficulty.organizationId
     this.organization = difficulty.organization && new OrganizationDto(difficulty.organization)
+
+    this.meta = difficulty.$extras
   }
 }
