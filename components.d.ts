@@ -72,6 +72,7 @@ declare module 'vue' {
     SheetTitle: typeof import('./inertia/components/ui/sheet/SheetTitle.vue')['default']
     SheetTrigger: typeof import('./inertia/components/ui/sheet/SheetTrigger.vue')['default']
     Sonner: typeof import('./inertia/components/ui/sonner/Sonner.vue')['default']
+    SortableResourceItem: typeof import('./inertia/components/SortableResourceItem.vue')['default']
     ToastManager: typeof import('./inertia/components/ToastManager.vue')['default']
   }
 }
