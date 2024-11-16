@@ -13,3 +13,9 @@ export const difficultyDestroyValidator = vine.withMetaData<OrganizationMetaData
     replacementId: vine.number().exists(existsInOrganization('difficulties')),
   })
 )
+
+export const difficultyOrderValidator = vine.compile(
+  vine.object({
+    ids: vine.array(vine.number())
+  })
+)

@@ -1,9 +1,11 @@
 <script setup lang="ts">
 import DifficultyDto from '#dtos/difficulty'
 import OrganizationDto from '#dtos/organization'
-import { Pencil, Plus, Trash2 } from 'lucide-vue-next'
+import { GripVertical, Pencil, Plus, Trash2 } from 'lucide-vue-next'
 import { computed, ref, watchEffect } from 'vue'
 import { useResourceActions } from '~/composables/resource_actions'
+import Sortable from 'vuedraggable'
+import { router } from '@inertiajs/vue3'
 
 const props = defineProps<{
   difficulties: DifficultyDto[]
@@ -35,6 +37,11 @@ function onDestroyShow(resource: DifficultyDto) {
     replacementId: replacement?.id.toString(),
   })
 }
+
+function onOrderUpdate() {
+  const ids = list.value.map((item) => item.id)
+  router.put('/difficulties/order', { ids }, { preserveScroll: true })
+}
 </script>
 
 <template>
@@ -50,32 +57,35 @@ function onDestroyShow(resource: DifficultyDto) {
       </Button>
     </div>
 
-    <ul class="flex flex-col">
-      <li
-        v-for="item in list"
-        :key="item.id"
-        class="flex items-center justify-between rounded-md px-3 py-1.5 hover:bg-slate-100 duration-300 group"
-      >
-        <div class="flex items-center gap-4">
-          <div
-            class="w-3 h-3 rounded-full bg-slate-100"
-            :style="{ backgroundColor: item.color }"
-          ></div>
-          <span class="font-bold">{{ item.name }}</span>
-          <span v-if="item.isDefault" class="text-sm text-slate-400">(Default)</span>
-        </div>
+    <Sortable v-model="list" item-key="id" tag="ul" handle=".handle" class="flex flex-col" @end="onOrderUpdate">
+      <template #item="{ element: item }">
+        <li class="flex items-center justify-between rounded-md px-3 py-1.5 hover:bg-slate-100 duration-300 group">
+          <div class="flex items-center gap-4">
+            <div class="handle text-slate-300 group-hover:text-slate-950 duration-300 cursor-move">
+              <GripVertical class="w-4 h-4" />
+            </div>
 
-        <div class="flex gap-2 opacity-0 group-hover:opacity-100 duration-300">
-          <Button size="xs" @click="onEdit(item)">
-            <Pencil class="w-3 h-3" aria-label="Edit Difficulty" />
-          </Button>
+            <div
+              class="w-3 h-3 rounded-full bg-slate-100"
+              :style="{ backgroundColor: item.color }"
+            ></div>
 
-          <Button size="xs" variant="destructive" @click="onDestroyShow(item)">
-            <Trash2 class="w-3 h-3" aria-label="Delete Difficulty" />
-          </Button>
-        </div>
-      </li>
-    </ul>
+            <span class="font-bold">{{ item.name }}</span>
+            <span v-if="item.isDefault" class="text-sm text-slate-400">(Default)</span>
+          </div>
+
+          <div class="flex gap-2 opacity-0 group-hover:opacity-100 duration-300">
+            <Button size="xs" @click="onEdit(item)">
+              <Pencil class="w-3 h-3" aria-label="Edit Difficulty" />
+            </Button>
+
+            <Button size="xs" variant="destructive" @click="onDestroyShow(item)">
+              <Trash2 class="w-3 h-3" aria-label="Delete Difficulty" />
+            </Button>
+          </div>
+        </li>
+      </template>
+    </Sortable>
 
     <FormDialog
       resource="Difficulty"
