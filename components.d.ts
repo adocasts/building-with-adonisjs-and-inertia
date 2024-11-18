@@ -23,6 +23,7 @@ declare module 'vue' {
     Button: typeof import('./inertia/components/ui/button/Button.vue')['default']
     Checkbox: typeof import('./inertia/components/ui/checkbox/Checkbox.vue')['default']
     ConfirmDestroyDialog: typeof import('./inertia/components/ConfirmDestroyDialog.vue')['default']
+    CourseActions: typeof import('./inertia/components/CourseActions.vue')['default']
     Dialog: typeof import('./inertia/components/ui/dialog/Dialog.vue')['default']
     DialogClose: typeof import('./inertia/components/ui/dialog/DialogClose.vue')['default']
     DialogContent: typeof import('./inertia/components/ui/dialog/DialogContent.vue')['default']

@@ -11,6 +11,7 @@ const props = defineProps<{
 }>()
 
 const courses = ref(props.courses)
+const actions = ref()
 
 watchEffect(() => (courses.value = props.courses))
 </script>
@@ -22,7 +23,7 @@ watchEffect(() => (courses.value = props.courses))
     <div class="flex items-center justify-between mb-3">
       <h1 class="text-2xl font-bold px-4">Courses</h1>
 
-      <Button size="sm" variant="ghost">
+      <Button size="sm" variant="ghost" @click="actions.create()">
         <Plus class="w-3 h-3 mr-2" />
         Add Course
       </Button>
@@ -72,5 +73,7 @@ watchEffect(() => (courses.value = props.courses))
         </TableRow>
       </TableBody>
     </Table>
+
+    <CourseActions ref="actions" :organization="organization" />
   </div>
 </template>

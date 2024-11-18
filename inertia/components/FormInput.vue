@@ -1,5 +1,5 @@
 <script setup lang="ts">
-import { computed } from 'vue'
+import { computed, ref } from 'vue'
 
 const props = withDefaults(
   defineProps<{
@@ -18,9 +18,15 @@ const props = withDefaults(
 
 const emit = defineEmits(['update:modelValue'])
 
+const inputEl = ref()
+
 const internalValue = computed({
   get: () => props.modelValue,
   set: (value) => emit('update:modelValue', value),
+})
+
+defineExpose({
+  inputEl
 })
 </script>
 
@@ -37,11 +43,12 @@ const internalValue = computed({
           class="absolute start-2 inset-y-2 w-6 h-6 rounded"
           :disabled="disabled"
         />
-        <Input v-model="internalValue" class="pl-10" :disabled="disabled" :required="required" />
+        <Input ref="inputEl" v-model="internalValue" class="pl-10" :disabled="disabled" :required="required" />
       </div>
       <Select
         v-else-if="type === 'select'"
         v-model="internalValue"
+        ref="inputEl"
         :disabled="disabled"
         :required="required"
       >
@@ -57,6 +64,7 @@ const internalValue = computed({
       <Input
         v-else
         v-model="internalValue"
+        ref="inputEl"
         :type="type"
         :disabled="disabled"
         :required="required"

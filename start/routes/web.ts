@@ -47,5 +47,6 @@ router.group(() => {
 
   //* Courses
   router.get('/courses', [CoursesController, 'index']).as('courses.index')
+  router.post('/courses', [CoursesController, 'store']).as('courses.store')
 
 }).use([middleware.auth(), middleware.organization()])
