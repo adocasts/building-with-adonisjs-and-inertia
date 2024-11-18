@@ -5,10 +5,14 @@ import Status from './status.js'
 import Lesson from './lesson.js'
 import { compose } from '@adonisjs/core/helpers'
 import { WithOrganization } from './mixins/with_organization.js'
+import Course from './course.js'
 
 export default class Module extends compose(BaseModel, WithOrganization) {
   @column({ isPrimary: true })
   declare id: number
+
+  @column()
+  declare courseId: number
 
   @column()
   declare statusId: number
@@ -27,6 +31,9 @@ export default class Module extends compose(BaseModel, WithOrganization) {
 
   @column.dateTime({ autoCreate: true, autoUpdate: true })
   declare updatedAt: DateTime
+
+  @belongsTo(() => Course)
+  declare course: BelongsTo<typeof Course>
 
   @belongsTo(() => Status)
   declare status: BelongsTo<typeof Status>

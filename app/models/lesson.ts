@@ -12,6 +12,9 @@ export default class Lesson extends compose(BaseModel, WithOrganization) {
   declare id: number
 
   @column()
+  declare moduleId: number
+
+  @column()
   declare accessLevelId: number
 
   @column()

@@ -73,6 +73,15 @@ declare module 'vue' {
     SheetTrigger: typeof import('./inertia/components/ui/sheet/SheetTrigger.vue')['default']
     Sonner: typeof import('./inertia/components/ui/sonner/Sonner.vue')['default']
     SortableResourceItem: typeof import('./inertia/components/SortableResourceItem.vue')['default']
+    Table: typeof import('./inertia/components/ui/table/Table.vue')['default']
+    TableBody: typeof import('./inertia/components/ui/table/TableBody.vue')['default']
+    TableCaption: typeof import('./inertia/components/ui/table/TableCaption.vue')['default']
+    TableCell: typeof import('./inertia/components/ui/table/TableCell.vue')['default']
+    TableEmpty: typeof import('./inertia/components/ui/table/TableEmpty.vue')['default']
+    TableFooter: typeof import('./inertia/components/ui/table/TableFooter.vue')['default']
+    TableHead: typeof import('./inertia/components/ui/table/TableHead.vue')['default']
+    TableHeader: typeof import('./inertia/components/ui/table/TableHeader.vue')['default']
+    TableRow: typeof import('./inertia/components/ui/table/TableRow.vue')['default']
     ToastManager: typeof import('./inertia/components/ToastManager.vue')['default']
   }
 }
