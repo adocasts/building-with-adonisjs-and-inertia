@@ -10,7 +10,7 @@ type Params = {
 export default class StoreCourse {
   static async handle({ organization, data }: Params) {
     const order = await this.#findNextOrder(organization)
-    console.log({ order })
+
     return organization.related('courses').create({
       ...data,
       order,
