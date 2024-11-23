@@ -22,8 +22,24 @@ function onCreate() {
   nextTick(() => dialogFocusEl.value.inputEl.$el.focus())
 }
 
+function onEdit(course: CourseDto) {
+  dialog.value.open(course, {
+    name: course.name,
+    statusId: course.statusId.toString(),
+    difficultyId: course.difficultyId.toString(),
+    accessLevelId: course.accessLevelId.toString()
+  })
+  nextTick(() => dialogFocusEl.value.inputEl.$el.focus())
+}
+
+function onDestroy(course: CourseDto) {
+  destroy.value.open(course)
+}
+
 defineExpose({
   create: onCreate,
+  edit: onEdit,
+  destroy: onDestroy
 })
 </script>
 
@@ -34,6 +50,7 @@ defineExpose({
     :editing="dialog.resource?.id"
     :processing="form.processing"
     @create="form.post('/courses', { onSuccess })"
+    @update="form.put(`/courses/${dialog.resource?.id}`, { onSuccess })"
   >
     <FormInput
       ref="dialogFocusEl"
@@ -61,4 +78,14 @@ defineExpose({
       </SelectItem>
     </FormInput>
   </FormDialog>
+
+  <ConfirmDestroyDialog
+    v-model:open="destroy.isOpen"
+    title="Delete Course?"
+    :action-href="`/courses/${destroy.resource?.id}`"
+  >
+    Are you sure you'd like to delete your
+    <strong>{{ destroy.resource?.name }}</strong> course? All data associated with this course,
+    including moduels and lessons, will be deleted forever.
+  </ConfirmDestroyDialog>
 </template>

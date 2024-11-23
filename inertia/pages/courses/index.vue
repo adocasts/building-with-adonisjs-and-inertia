@@ -58,8 +58,8 @@ watchEffect(() => (courses.value = props.courses))
                 <DropdownMenuItem :as="Link" :href="`/courses/${course.id}`">
                   Open
                 </DropdownMenuItem>
-                <DropdownMenuItem>Edit</DropdownMenuItem>
-                <DropdownMenuItem>Delete</DropdownMenuItem>
+                <DropdownMenuItem @click="actions.edit(course)">Edit</DropdownMenuItem>
+                <DropdownMenuItem @click="actions.destroy(course)">Delete</DropdownMenuItem>
               </DropdownMenuContent>
             </DropdownMenu>
           </TableCell>
