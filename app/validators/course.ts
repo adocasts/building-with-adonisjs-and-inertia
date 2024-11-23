@@ -10,3 +10,23 @@ export const courseValidator = vine.withMetaData<OrganizationMetaData>().compile
     notes: vine.string().optional(),
   })
 )
+
+export const coursePatchTagValidator = vine.withMetaData<OrganizationMetaData>().compile(
+  vine.object({
+    statusId: vine
+      .number()
+      .exists(existsInOrganization('statuses'))
+      .optional()
+      .requiredIfMissing(['difficultyId', 'accessLevelId']),
+    difficultyId: vine
+      .number()
+      .exists(existsInOrganization('difficulties'))
+      .optional()
+      .requiredIfMissing(['statusId', 'accessLevelId']),
+    accessLevelId: vine
+      .number()
+      .exists(existsInOrganization('access_levels'))
+      .optional()
+      .requiredIfMissing(['difficultyId', 'statusId']),
+  })
+)

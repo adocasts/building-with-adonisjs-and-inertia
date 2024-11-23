@@ -50,6 +50,7 @@ router.group(() => {
   router.get('/courses/:id', [CoursesController, 'show']).as('courses.show')
   router.post('/courses', [CoursesController, 'store']).as('courses.store')
   router.put('/courses/:id', [CoursesController, 'update']).as('courses.update')
+  router.patch('/courses/:id/tags', [CoursesController, 'tag']).as('coures.tags')
   router.delete('/courses/:id', [CoursesController, 'destroy']).as('courses.destroy')
 
 }).use([middleware.auth(), middleware.organization()])

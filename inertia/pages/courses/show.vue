@@ -2,7 +2,7 @@
 import CourseDto from '#dtos/course';
 import OrganizationDto from '#dtos/organization';
 import { Pencil, Trash2 } from 'lucide-vue-next';
-import { ref, watchEffect } from 'vue';
+import { computed, ref, watchEffect } from 'vue';
 
 const props = defineProps<{
   organization: OrganizationDto
@@ -11,6 +11,7 @@ const props = defineProps<{
 
 const internalCourse = ref({ ...props.course })
 const actions = ref()
+const path = computed(() => `/courses/${props.course.id}/tags`)
 
 watchEffect(() => (internalCourse.value = { ...props.course }))
 </script>
@@ -34,6 +35,35 @@ watchEffect(() => (internalCourse.value = { ...props.course }))
         </Button>
       </div>
     </div>
+    
+    <ul class="grid gap-4 mb-6 px-4">
+      <li class="flex items-center gap-3">
+        <div class="w-24">Status</div>
+        <TagSelector
+          v-model="internalCourse.statusId" 
+          :options="organization.statuses" 
+          :patch="{ path, key: 'statusId' }"
+        />
+      </li>
+
+      <li class="flex items-center gap-3">
+        <div class="w-24">Difficulty</div>
+        <TagSelector
+          v-model="internalCourse.difficultyId" 
+          :options="organization.difficulties" 
+          :patch="{ path, key: 'difficultyId' }"
+        />
+      </li>
+
+      <li class="flex items-center gap-3">
+        <div class="w-24">Access</div>
+        <TagSelector
+          v-model="internalCourse.accessLevelId" 
+          :options="organization.accessLevels" 
+          :patch="{ path, key: 'accessLevelId' }"
+        />
+      </li>
+    </ul>
 
     <CourseActions ref="actions" :organization="organization" />
   </div>

@@ -83,6 +83,7 @@ declare module 'vue' {
     TableHead: typeof import('./inertia/components/ui/table/TableHead.vue')['default']
     TableHeader: typeof import('./inertia/components/ui/table/TableHeader.vue')['default']
     TableRow: typeof import('./inertia/components/ui/table/TableRow.vue')['default']
+    TagSelector: typeof import('./inertia/components/TagSelector.vue')['default']
     ToastManager: typeof import('./inertia/components/ToastManager.vue')['default']
   }
 }
