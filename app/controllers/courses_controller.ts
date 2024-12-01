@@ -5,6 +5,7 @@ import StoreCourse from '#actions/courses/store_course'
 import UpdateCourse from '#actions/courses/update_course'
 import UpdateCourseTag from '#actions/courses/update_course_tag'
 import CourseDto from '#dtos/course'
+import ModuleDto from '#dtos/module'
 import { coursePatchTagValidator, courseValidator } from '#validators/course'
 import { withOrganizationMetaData } from '#validators/helpers/organizations'
 import type { HttpContext } from '@adonisjs/core/http'
@@ -33,13 +34,14 @@ export default class CoursesController {
   }
 
   async show({ params, inertia, organization }: HttpContext) {
-    const { course } = await GetCourse.handle({
+    const { course, modules } = await GetCourse.handle({
       id: params.id,
       organization,
     })
 
     return inertia.render('courses/show', {
       course: new CourseDto(course),
+      modules: ModuleDto.fromArray(modules),
     })
   }
 

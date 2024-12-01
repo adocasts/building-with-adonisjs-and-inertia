@@ -2,6 +2,7 @@ import { BaseModelDto } from '@adocasts.com/dto/base'
 import Module from '#models/module'
 import StatusDto from '#dtos/status'
 import OrganizationDto from './organization.js'
+import LessonDto from './lesson.js'
 
 export default class ModuleDto extends BaseModelDto {
   declare id: number
@@ -15,6 +16,7 @@ export default class ModuleDto extends BaseModelDto {
 
   declare organizationId: number
   declare organization: OrganizationDto | null
+  declare lessons: LessonDto[]
 
   constructor(module?: Module) {
     super()
@@ -31,5 +33,6 @@ export default class ModuleDto extends BaseModelDto {
 
     this.organizationId = module.organizationId
     this.organization = module.organization && new OrganizationDto(module.organization)
+    this.lessons = LessonDto.fromArray(module.lessons)
   }
 }

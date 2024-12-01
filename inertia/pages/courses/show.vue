@@ -1,19 +1,23 @@
 <script setup lang="ts">
-import CourseDto from '#dtos/course';
-import OrganizationDto from '#dtos/organization';
-import { Pencil, Trash2 } from 'lucide-vue-next';
-import { computed, ref, watchEffect } from 'vue';
+import CourseDto from '#dtos/course'
+import ModuleDto from '#dtos/module'
+import OrganizationDto from '#dtos/organization'
+import { Pencil, Trash2 } from 'lucide-vue-next'
+import { computed, ref, toRaw, watchEffect } from 'vue'
 
 const props = defineProps<{
   organization: OrganizationDto
   course: CourseDto
+  modules: ModuleDto[]
 }>()
 
 const internalCourse = ref({ ...props.course })
+const internalModules = ref(structuredClone(toRaw(props.modules)))
 const actions = ref()
 const path = computed(() => `/courses/${props.course.id}/tags`)
 
 watchEffect(() => (internalCourse.value = { ...props.course }))
+watchEffect(() => (internalModules.value = structuredClone(toRaw(props.modules))))
 </script>
 
 <template>
@@ -29,19 +33,24 @@ watchEffect(() => (internalCourse.value = { ...props.course }))
           Edit
         </Button>
 
-        <Button size="sm" variant="ghost" class="hover:text-red-500" @click="actions.destroy(internalCourse)">
+        <Button
+          size="sm"
+          variant="ghost"
+          class="hover:text-red-500"
+          @click="actions.destroy(internalCourse)"
+        >
           <Trash2 class="w-3 h-3 mr-2" />
           Delete
         </Button>
       </div>
     </div>
-    
+
     <ul class="grid gap-4 mb-6 px-4">
       <li class="flex items-center gap-3">
         <div class="w-24">Status</div>
         <TagSelector
-          v-model="internalCourse.statusId" 
-          :options="organization.statuses" 
+          v-model="internalCourse.statusId"
+          :options="organization.statuses"
           :patch="{ path, key: 'statusId' }"
         />
       </li>
@@ -49,8 +58,8 @@ watchEffect(() => (internalCourse.value = { ...props.course }))
       <li class="flex items-center gap-3">
         <div class="w-24">Difficulty</div>
         <TagSelector
-          v-model="internalCourse.difficultyId" 
-          :options="organization.difficulties" 
+          v-model="internalCourse.difficultyId"
+          :options="organization.difficulties"
           :patch="{ path, key: 'difficultyId' }"
         />
       </li>
@@ -58,12 +67,20 @@ watchEffect(() => (internalCourse.value = { ...props.course }))
       <li class="flex items-center gap-3">
         <div class="w-24">Access</div>
         <TagSelector
-          v-model="internalCourse.accessLevelId" 
-          :options="organization.accessLevels" 
+          v-model="internalCourse.accessLevelId"
+          :options="organization.accessLevels"
           :patch="{ path, key: 'accessLevelId' }"
         />
       </li>
     </ul>
+
+    <div class="px-2">
+      <div class="border-b border-slate-200 text-slate-400 text-sm p-2 mb-2">
+        {{ modules.length }} Modules, {{ course.meta.lessons_count }} Lessons
+      </div>
+
+      <SortableModules v-model="internalModules" :organization="organization" :course="course" />
+    </div>
 
     <CourseActions ref="actions" :organization="organization" />
   </div>
