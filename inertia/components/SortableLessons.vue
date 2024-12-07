@@ -4,7 +4,8 @@ import LessonDto from '#dtos/lesson'
 import LessonFormDto from '#dtos/lesson_form'
 import ModuleDto from '#dtos/module'
 import Organization from '#models/organization'
-import { EllipsisVertical, GripVertical, Pencil, Plus } from 'lucide-vue-next'
+import { CalendarClock, EllipsisVertical, GripVertical, Pencil, Plus } from 'lucide-vue-next'
+import { DateTime } from 'luxon'
 import { computed, nextTick, ref } from 'vue'
 import Sortable from 'vuedraggable'
 import { useResourceActions } from '~/composables/resource_actions'
@@ -41,6 +42,23 @@ function onEdit(resource: LessonDto) {
   dialog.value.open(resource, new LessonFormDto(resource))
   nextTick(() => dialogFocusEl.value.inputEl.$el.focus())
 }
+
+function onSubmit() {
+  const id = dialog.value.resource?.id
+  const action = form.transform(({ publishAtDate, publishAtTime, ...data }) => ({
+    ...data,
+    publishAt:
+      publishAtDate && publishAtTime
+        ? DateTime.fromISO([publishAtDate, publishAtTime].join('T')).toUTC()
+        : null,
+  }))
+
+  if (id) {
+    return action.put(`/lessons/${id}`, { onSuccess, preserveScroll: true })
+  }
+
+  action.post(`/lessons`, { onSuccess, preserveScroll: true })
+}
 </script>
 
 <template>
@@ -59,6 +77,14 @@ function onEdit(resource: LessonDto) {
             {{ module.order }}.{{ lesson.order }}
           </span>
           <span class="text-sm">{{ lesson.name }}</span>
+
+          <span
+            v-if="lesson.publishAt"
+            class="text-slate-400 text-xs hidden lg:flex items-center gap-2"
+          >
+            <CalendarClock class="w-3 h-3" />
+            {{ DateTime.fromISO(lesson.publishAt).toRelative() }}
+          </span>
 
           <div class="opacity-0 group-hover:opacity-100 duration-300 ml-2 relative">
             <Button
@@ -101,8 +127,8 @@ function onEdit(resource: LessonDto) {
     v-model:open="dialog.isOpen"
     :editing="dialog.resource?.id"
     :processing="form.processing"
-    @create="form.post(`/lessons`, { onSuccess, preserveScroll: true })"
-    @update="form.put(`/lessons/${dialog.resource?.id}`, { onSuccess, preserveScroll: true })"
+    @create="onSubmit"
+    @update="onSubmit"
   >
     <FormInput
       ref="dialogFocusEl"
@@ -111,6 +137,14 @@ function onEdit(resource: LessonDto) {
       :error="form.errors.name"
       placeholder="My Cool Lesson"
     />
+
+    <FormInput
+      type="group"
+      label="Publish At"
+      :error="form.errors.publishAtDate || form.errors.publishAtTime"
+    >
+      <DatePicker v-model:date="form.publishAtDate" v-model:time="form.publishAtTime" />
+    </FormInput>
 
     <FormInput
       type="select"
