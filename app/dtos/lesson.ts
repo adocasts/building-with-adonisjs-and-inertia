@@ -6,6 +6,7 @@ import OrganizationDto from './organization.js'
 
 export default class LessonDto extends BaseModelDto {
   declare id: number
+  declare moduleId: number
   declare accessLevelId: number
   declare statusId: number
   declare name: string
@@ -25,6 +26,7 @@ export default class LessonDto extends BaseModelDto {
 
     if (!lesson) return
     this.id = lesson.id
+    this.moduleId = lesson.moduleId
     this.accessLevelId = lesson.accessLevelId
     this.statusId = lesson.statusId
     this.name = lesson.name

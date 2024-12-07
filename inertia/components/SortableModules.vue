@@ -84,6 +84,8 @@ function onEdit(resource: ModuleDto) {
             </DropdownMenu>
           </div>
         </div>
+
+        <SortableLessons v-model="modules[index]" :organization="organization" :course="course" />
       </li>
     </template>
   </Sortable>
