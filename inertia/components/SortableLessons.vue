@@ -16,7 +16,7 @@ const props = defineProps<{
   modelValue: ModuleDto
 }>()
 
-const emit = defineEmits(['update:modelValue'])
+const emit = defineEmits(['update:modelValue', 'end'])
 const dialogFocusEl = ref()
 
 const module = computed({
@@ -62,7 +62,14 @@ function onSubmit() {
 </script>
 
 <template>
-  <Sortable v-model="module.lessons" item-key="id" tag="ul" group="lessons" handle=".handle">
+  <Sortable
+    v-model="module.lessons"
+    item-key="id"
+    tag="ul"
+    group="lessons"
+    handle=".handle"
+    @end="$emit('end')"
+  >
     <template #item="{ element: lesson }">
       <li
         class="flex flex-wrap items-center justify-between gap-2 rounded-md px-2 py-1.5 hover:bg-slate-50 duration-300 group relative"

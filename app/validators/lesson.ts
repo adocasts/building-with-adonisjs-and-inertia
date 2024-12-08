@@ -30,3 +30,14 @@ export const lessonPatchTagValidator = vine.withMetaData<OrganizationMetaData>()
       .requiredIfMissing(['statusId']),
   })
 )
+
+export const lessonOrderValidator = vine.compile(
+  vine.object({
+    modules: vine.array(
+      vine.object({
+        id: vine.number(),
+        lessons: vine.array(vine.number()),
+      })
+    ),
+  })
+)

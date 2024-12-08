@@ -46,6 +46,15 @@ function onModuleOrderChange() {
   const ids = modules.value.map((module) => module.id)
   router.patch(`${prefixUrl.value}/modules/order`, { ids }, { preserveScroll: true })
 }
+
+function onLessonOrderChange() {
+  const data = modules.value.map((module) => ({
+    id: module.id,
+    lessons: module.lessons.map((lesson) => lesson.id),
+  }))
+
+  router.patch(`${prefixUrl.value}/lessons/order`, { modules: data }, { preserveScroll: true })
+}
 </script>
 
 <template>
@@ -104,7 +113,12 @@ function onModuleOrderChange() {
           </div>
         </div>
 
-        <SortableLessons v-model="modules[index]" :organization="organization" :course="course" />
+        <SortableLessons
+          v-model="modules[index]"
+          :organization="organization"
+          :course="course"
+          @end="onLessonOrderChange"
+        />
       </li>
     </template>
   </Sortable>
