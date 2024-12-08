@@ -15,3 +15,18 @@ export const lessonValidator = vine.withMetaData<OrganizationMetaData>().compile
     statusId: vine.number().exists(existsInOrganization('statuses')),
   })
 )
+
+export const lessonPatchTagValidator = vine.withMetaData<OrganizationMetaData>().compile(
+  vine.object({
+    statusId: vine
+      .number()
+      .exists(existsInOrganization('statuses'))
+      .optional()
+      .requiredIfMissing(['accessLevelId']),
+    accessLevelId: vine
+      .number()
+      .exists(existsInOrganization('access_levels'))
+      .optional()
+      .requiredIfMissing(['statusId']),
+  })
+)

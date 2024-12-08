@@ -58,11 +58,13 @@ router.group(() => {
   //* Modules
   router.post('/courses/:courseId/modules', [ModulesController, 'store']).as('modules.store')
   router.put('/courses/:courseId/modules/:id', [ModulesController, 'update']).as('modules.update')
+  router.patch('/courses/:courseId/modules/:id/tags', [ModulesController, 'tag']).as('modules.tags')
   router.delete('/courses/:courseId/modules/:id', [ModulesController, 'destroy']).as('modules.destroy')
 
   //* Lessons
   router.post('/lessons', [LessonsController, 'store']).as('lessons.store')
   router.put('/lessons/:id', [LessonsController, 'update']).as('lessons.update')
+  router.patch('/lessons/:id/tags', [LessonsController, 'tag']).as('lessons.tags')
   router.delete('/lessons/:id', [LessonsController, 'destroy']).as('lessons.destroy')
 
 }).use([middleware.auth(), middleware.organization()])

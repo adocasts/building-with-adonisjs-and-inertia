@@ -99,6 +99,18 @@ function onSubmit() {
         </div>
 
         <div class="flex gap-2 items-center justify-end">
+          <TagSelector
+            v-model="lesson.accessLevelId"
+            :options="organization.accessLevels"
+            :patch="{ path: `/lessons/${lesson.id}/tags`, key: 'accessLevelId' }"
+          />
+
+          <TagSelector
+            v-model="lesson.statusId"
+            :options="organization.statuses"
+            :patch="{ path: `/lessons/${lesson.id}/tags`, key: 'statusId' }"
+          />
+
           <DropdownMenu>
             <DropdownMenuTrigger class="ml-2 text-slate-400 hover:text-slate-950 duration-300">
               <EllipsisVertical class="w-4 h-4" />
