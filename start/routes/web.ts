@@ -58,6 +58,7 @@ router.group(() => {
   //* Modules
   router.post('/courses/:courseId/modules', [ModulesController, 'store']).as('modules.store')
   router.put('/courses/:courseId/modules/:id', [ModulesController, 'update']).as('modules.update')
+  router.patch('/courses/:courseId/modules/order', [ModulesController, 'order']).as('modules.order')
   router.patch('/courses/:courseId/modules/:id/tags', [ModulesController, 'tag']).as('modules.tags')
   router.delete('/courses/:courseId/modules/:id', [ModulesController, 'destroy']).as('modules.destroy')
 

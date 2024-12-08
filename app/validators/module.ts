@@ -13,3 +13,9 @@ export const modulePatchTagValidator = vine.withMetaData<OrganizationMetaData>()
     statusId: vine.number().exists(existsInOrganization('statuses')),
   })
 )
+
+export const moduleOrderValidator = vine.compile(
+  vine.object({
+    ids: vine.array(vine.number()),
+  })
+)

@@ -2,6 +2,7 @@
 import CourseDto from '#dtos/course'
 import ModuleDto from '#dtos/module'
 import Organization from '#models/organization'
+import { router } from '@inertiajs/vue3'
 import { EllipsisVertical, GripVertical, Pencil, Plus } from 'lucide-vue-next'
 import { computed, nextTick, ref } from 'vue'
 import Sortable from 'vuedraggable'
@@ -40,10 +41,22 @@ function onEdit(resource: ModuleDto) {
   })
   nextTick(() => dialogFocusEl.value.inputEl.$el.focus())
 }
+
+function onModuleOrderChange() {
+  const ids = modules.value.map((module) => module.id)
+  router.patch(`${prefixUrl.value}/modules/order`, { ids }, { preserveScroll: true })
+}
 </script>
 
 <template>
-  <Sortable v-model="modules" item-key="id" tag="ul" group="modules" handle=".handle">
+  <Sortable
+    v-model="modules"
+    item-key="id"
+    tag="ul"
+    group="modules"
+    handle=".handle"
+    @end="onModuleOrderChange"
+  >
     <template #item="{ element: module, index }">
       <li class="flex flex-col border-b border-slate-200 pb-2 mb-2">
         <div
