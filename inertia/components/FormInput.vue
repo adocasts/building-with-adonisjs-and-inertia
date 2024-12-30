@@ -26,7 +26,7 @@ const internalValue = computed({
 })
 
 defineExpose({
-  inputEl
+  inputEl,
 })
 </script>
 
@@ -43,7 +43,13 @@ defineExpose({
           class="absolute start-2 inset-y-2 w-6 h-6 rounded"
           :disabled="disabled"
         />
-        <Input ref="inputEl" v-model="internalValue" class="pl-10" :disabled="disabled" :required="required" />
+        <Input
+          ref="inputEl"
+          v-model="internalValue"
+          class="pl-10"
+          :disabled="disabled"
+          :required="required"
+        />
       </div>
       <Select
         v-else-if="type === 'select'"
@@ -68,6 +74,7 @@ defineExpose({
         :type="type"
         :disabled="disabled"
         :required="required"
+        :placeholder="placeholder"
       />
     </Label>
     <div v-if="error" class="text-red-500 text-sm">

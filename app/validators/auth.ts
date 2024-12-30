@@ -8,18 +8,20 @@ export const loginValidator = vine.compile(
   })
 )
 
+export const newEmailRule = vine
+  .string()
+  .maxLength(254)
+  .email()
+  .normalizeEmail()
+  .unique(async (db, value) => {
+    const exists = await db.from('users').where('email', value).select('id').first()
+    return !exists
+  })
+
 export const registerValidator = vine.compile(
   vine.object({
     fullName: vine.string().maxLength(254),
-    email: vine
-      .string()
-      .maxLength(254)
-      .email()
-      .normalizeEmail()
-      .unique(async (db, value) => {
-        const exists = await db.from('users').where('email', value).select('id').first()
-        return !exists
-      }),
+    email: newEmailRule.clone(),
     password: vine.string().minLength(8),
   })
 )

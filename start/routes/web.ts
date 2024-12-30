@@ -5,6 +5,8 @@ const StatusesController = () => import('#controllers/statuses_controller')
 const CoursesController = () => import('#controllers/courses_controller')
 const ModulesController = () => import('#controllers/modules_controller')
 const LessonsController = () => import('#controllers/lessons_controller')
+const ProfilesController = () => import('#controllers/settings/profiles_controller')
+const AccountsController = () => import('#controllers/settings/accounts_controller')
 import { middleware } from '#start/kernel'
 import router from '@adonisjs/core/services/router'
 
@@ -68,5 +70,14 @@ router.group(() => {
   router.patch('/lessons/:id/tags', [LessonsController, 'tag']).as('lessons.tags')
   router.delete('/lessons/:id', [LessonsController, 'destroy']).as('lessons.destroy')
   router.patch('/courses/:courseId/lessons/order', [LessonsController, 'order']).as('lessons.order')
+
+  //* Settings (Profile)
+  router.get('/settings/profile', [ProfilesController, 'index']).as('settings.profile.index')
+  router.put('/settings/profile', [ProfilesController, 'update']).as('settings.profile.update')
+
+  //* Settings (Account)
+  router.get('/settings/account', [AccountsController, 'index']).as('settings.account.index')
+  router.put('/settings/account/email', [AccountsController, 'updateEmail']).as('settings.account.email')
+  router.delete('/settings/account', [AccountsController, 'destroy']).as('settings.account.destroy')
 
 }).use([middleware.auth(), middleware.organization()])
