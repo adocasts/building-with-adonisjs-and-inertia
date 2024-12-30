@@ -1,6 +1,7 @@
 import User from '#models/user'
 import { updateEmailValidator } from '#validators/setting'
 import db from '@adonisjs/lucid/services/db'
+import mail from '@adonisjs/mail/services/main'
 import { Infer } from '@vinejs/vine/types'
 
 type Params = {
@@ -25,6 +26,17 @@ export default class UpdateUserEmail {
       })
     })
 
+    await this.#sendEmailNotification(user, emailOld)
+
     return user
+  }
+
+  static async #sendEmailNotification(user: User, emailOld: string) {
+    await mail.sendLater((message) => {
+      message
+        .to(emailOld)
+        .subject('Your email has been successfully changed')
+        .htmlView('emails/email_change', { user })
+    })
   }
 }
