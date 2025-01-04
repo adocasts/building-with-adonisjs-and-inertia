@@ -41,7 +41,7 @@ export default class OrganizationsController {
   /**
    * Handle form submission for the edit action
    */
-  async update({ params, request, response, auth }: HttpContext) {
+  async update({ params, request, response, auth, session }: HttpContext) {
     const data = await request.validateUsing(organizationValidator)
 
     await UpdateOrganization.handle({
@@ -49,6 +49,8 @@ export default class OrganizationsController {
       id: params.id,
       data,
     })
+
+    session.flash('success', 'Your organization has been updated')
 
     return response.redirect().back()
   }

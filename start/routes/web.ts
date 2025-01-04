@@ -5,8 +5,10 @@ const StatusesController = () => import('#controllers/statuses_controller')
 const CoursesController = () => import('#controllers/courses_controller')
 const ModulesController = () => import('#controllers/modules_controller')
 const LessonsController = () => import('#controllers/lessons_controller')
-const ProfilesController = () => import('#controllers/settings/profiles_controller')
-const AccountsController = () => import('#controllers/settings/accounts_controller')
+const SettingsProfilesController = () => import('#controllers/settings/profiles_controller')
+const SettingsAccountsController = () => import('#controllers/settings/accounts_controller')
+const SettingsOrganizationsController = () =>
+  import('#controllers/settings/organizations_controller')
 import { middleware } from '#start/kernel'
 import router from '@adonisjs/core/services/router'
 
@@ -72,12 +74,15 @@ router.group(() => {
   router.patch('/courses/:courseId/lessons/order', [LessonsController, 'order']).as('lessons.order')
 
   //* Settings (Profile)
-  router.get('/settings/profile', [ProfilesController, 'index']).as('settings.profile.index')
-  router.put('/settings/profile', [ProfilesController, 'update']).as('settings.profile.update')
+  router.get('/settings/profile', [SettingsProfilesController, 'index']).as('settings.profile.index')
+  router.put('/settings/profile', [SettingsProfilesController, 'update']).as('settings.profile.update')
 
   //* Settings (Account)
-  router.get('/settings/account', [AccountsController, 'index']).as('settings.account.index')
-  router.put('/settings/account/email', [AccountsController, 'updateEmail']).as('settings.account.email')
-  router.delete('/settings/account', [AccountsController, 'destroy']).as('settings.account.destroy')
+  router.get('/settings/account', [SettingsAccountsController, 'index']).as('settings.account.index')
+  router.put('/settings/account/email', [SettingsAccountsController, 'updateEmail']).as('settings.account.email')
+  router.delete('/settings/account', [SettingsAccountsController, 'destroy']).as('settings.account.destroy')
+
+  //* Settings (Organization)
+  router.get('/settings/organization', [SettingsOrganizationsController, 'index']).as('settings.organization.index')
 
 }).use([middleware.auth(), middleware.organization()])
