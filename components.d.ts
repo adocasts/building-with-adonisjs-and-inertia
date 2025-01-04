@@ -7,6 +7,7 @@ export {}
 /* prettier-ignore */
 declare module 'vue' {
   export interface GlobalComponents {
+    AccountDeleteCard: typeof import('./inertia/components/AccountDeleteCard.vue')['default']
     AccountEmailCard: typeof import('./inertia/components/AccountEmailCard.vue')['default']
     Alert: typeof import('./inertia/components/ui/alert/Alert.vue')['default']
     AlertDescription: typeof import('./inertia/components/ui/alert/AlertDescription.vue')['default']
