@@ -29,7 +29,7 @@ const props = defineProps<{
             </Button>
           </DropdownMenuTrigger>
           <DropdownMenuContent align="end">
-            <DropdownMenuLabel>USER NAME</DropdownMenuLabel>
+            <DropdownMenuLabel>{{ user.fullName }}</DropdownMenuLabel>
             <DropdownMenuSeparator />
             <DropdownMenuItem :as="Link" href="/settings/profile">
               Profile Settings
