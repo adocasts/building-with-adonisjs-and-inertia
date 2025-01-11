@@ -1,7 +1,5 @@
-import GetOrganizationPendingInvites from '#actions/organizations/get_organization_pending_invites'
 import GetOrganizationUsers from '#actions/organizations/get_organization_users'
 import SendOrganizationInvite from '#actions/organizations/send_organization_invite'
-import OrganizationInviteDto from '#dtos/organization_invite'
 import RoleDto from '#dtos/role'
 import UserDto from '#dtos/user'
 import Role from '#models/role'
@@ -15,10 +13,6 @@ export default class OrganizationsController {
       users: async () => {
         const users = await GetOrganizationUsers.handle({ organization })
         return UserDto.fromArray(users)
-      },
-      invites: async () => {
-        const pendingInvites = await GetOrganizationPendingInvites.handle({ organization })
-        return OrganizationInviteDto.fromArray(pendingInvites)
       },
       roles: async () => {
         const roles = await Role.query().orderBy('name')

@@ -1,6 +1,5 @@
 <script setup lang="ts">
 import OrganizationDto from '#dtos/organization'
-import OrganizationInviteDto from '#dtos/organization_invite'
 import RoleDto from '#dtos/role'
 import UserDto from '#dtos/user'
 
@@ -9,7 +8,6 @@ defineProps<{
   user: UserDto
   users: UserDto[]
   roles: RoleDto[]
-  invites: OrganizationInviteDto[]
 }>()
 </script>
 
@@ -22,6 +20,5 @@ defineProps<{
   <SettingsShell>
     <OrganizationEditCard :organization="organization" />
     <OrganizationUsersCard :user="user" :users="users" :roles="roles" />
-    <OrganizationUserInvitesCard :invites="invites" :roles="roles" />
   </SettingsShell>
 </template>

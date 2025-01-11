@@ -1,10 +1,7 @@
-import AcceptOrganizationInvite from '#actions/organizations/accept_organization_invite'
 import DestroyOrganization from '#actions/organizations/destroy_organization'
 import SetActiveOrganization from '#actions/organizations/http/set_active_organization'
 import StoreOrganization from '#actions/organizations/store_organization'
 import UpdateOrganization from '#actions/organizations/update_organization'
-import OrganizationInvite from '#models/organization_invite'
-import User from '#models/user'
 import { organizationValidator } from '#validators/organization'
 import { inject } from '@adonisjs/core'
 import type { HttpContext } from '@adonisjs/core/http'
@@ -58,36 +55,7 @@ export default class OrganizationsController {
     return response.redirect().back()
   }
 
-  async acceptInvite({ request, response, auth, params, session }: HttpContext) {
-    await auth.use('web').check()
-
-    if (!request.hasValidSignature()) {
-      session.flash('errorBag', 'An invalid invitation URL was provided')
-      return auth.user
-        ? response.redirect().toRoute('courses.index')
-        : response.redirect().toRoute('login.show')
-    }
-
-    if (!auth.use('web').user) {
-      const invite = await OrganizationInvite.findOrFail(params.id)
-      const isUser = await User.query().where('email', invite.email).first()
-
-      session.put('invite_id', invite.id)
-
-      return isUser
-        ? response.redirect().toRoute('login.show')
-        : response.redirect().toRoute('register.show')
-    }
-
-    const result = await AcceptOrganizationInvite.handle({
-      inviteId: params.id,
-      user: auth.use('web').user!,
-    })
-
-    session.flash('success', result.message)
-
-    return response.redirect().toRoute('courses.index')
-  }
+  async acceptInvite({}: HttpContext) {}
 
   /**
    * Delete record

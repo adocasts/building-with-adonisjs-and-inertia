@@ -13,13 +13,9 @@ export default class RegisterController {
     const data = await request.validateUsing(registerValidator)
 
     // register the user
-    const { invite } = await webRegister.handle({ data })
+    await webRegister.handle({ data })
 
     session.flash('success', 'Welcome to PlotMyCourse')
-
-    if (invite) {
-      return response.redirect().toRoute('courses.index')
-    }
 
     return response.redirect().toRoute('organizations.create')
   }
