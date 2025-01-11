@@ -2,6 +2,7 @@ const RegisterController = () => import('#controllers/auth/register_controller')
 const LogoutController = () => import('#controllers/auth/logout_controller')
 const LoginController = () => import('#controllers/auth/login_controller')
 const ForgotPasswordsController = () => import('#controllers/auth/forgot_passwords_controller')
+const OrganizationsController = () => import('#controllers/organizations_controller')
 import { middleware } from '#start/kernel'
 import router from '@adonisjs/core/services/router'
 
@@ -27,3 +28,5 @@ router.group(() => {
   .prefix('/forgot-password')
   .as('forgot_password')
   .use(middleware.guest())
+
+router.get('/organizations/invites/:id/accept', [OrganizationsController, 'acceptInvite']).as('organizations.invites.accept')

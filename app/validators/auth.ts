@@ -7,16 +7,12 @@ export const loginValidator = vine.compile(
     remember: vine.boolean().optional(),
   })
 )
+export const emailRule = vine.string().maxLength(254).email().normalizeEmail()
 
-export const newEmailRule = vine
-  .string()
-  .maxLength(254)
-  .email()
-  .normalizeEmail()
-  .unique(async (db, value) => {
-    const exists = await db.from('users').where('email', value).select('id').first()
-    return !exists
-  })
+export const newEmailRule = emailRule.clone().unique(async (db, value) => {
+  const exists = await db.from('users').where('email', value).select('id').first()
+  return !exists
+})
 
 export const registerValidator = vine.compile(
   vine.object({
