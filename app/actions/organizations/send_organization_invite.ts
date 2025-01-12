@@ -21,11 +21,8 @@ export default class SendOrganizationInvite {
 
     const invitedUser = await User.findBy('email', invite.email)
 
-    const inviteUrl = router
-      .builder()
-      .params({ id: invite.id })
-      .prefixUrl(env.get('APP_URL'))
-      .makeSigned('organizations.invites.accept')
+    // todo: fill out signed url
+    const inviteUrl = ''
 
     await mail.sendLater((message) => {
       message
