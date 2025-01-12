@@ -28,5 +28,3 @@ router.group(() => {
   .prefix('/forgot-password')
   .as('forgot_password')
   .use(middleware.guest())
-
-router.get('/organizations/invites/:id/accept', [OrganizationsController, 'acceptInvite']).as('organizations.invites.accept')
