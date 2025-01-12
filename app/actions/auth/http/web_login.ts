@@ -33,6 +33,6 @@ export default class WebLogin {
     })
 
     this.ctx.session.forget('invite_id')
-    this.ctx.session.flash('success', result.message)
+    this.ctx.session.flash(result.state, result.message)
   }
 }

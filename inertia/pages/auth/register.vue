@@ -2,12 +2,17 @@
 import AuthLayout from '~/layouts/AuthLayout.vue'
 import { useForm } from '@inertiajs/vue3'
 import { Loader } from 'lucide-vue-next'
+import OrganizationInviteDto from '#dtos/organization_invite'
 
 defineOptions({ layout: AuthLayout })
 
+const props = defineProps<{
+  invite?: OrganizationInviteDto
+}>()
+
 const form = useForm({
   fullName: '',
-  email: '',
+  email: props.invite?.email ?? '',
   password: '',
 })
 </script>
@@ -39,7 +44,7 @@ const form = useForm({
     <div class="grid gap-1">
       <Label class="grid gap-1">
         <span>Email</span>
-        <Input type="email" v-model="form.email" />
+        <Input type="email" v-model="form.email" :disabled="!!invite" />
       </Label>
       <div v-if="form.errors.email" class="text-red-500 text-sm">
         {{ form.errors.email }}

@@ -86,8 +86,10 @@ export default class OrganizationsController {
       user,
     })
 
+    console.log({ result })
+
     session.forget('invite_id')
-    session.flash('success', result.message)
+    session.flash(result.state, result.message)
 
     return response.redirect().toRoute('courses.index')
   }

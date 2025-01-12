@@ -34,7 +34,7 @@ export default class WebRegister {
     })
 
     this.ctx.session.forget('invite_id')
-    this.ctx.session.flash('success', result.message)
+    this.ctx.session.flash(result.state, result.message)
 
     return result.invite
   }

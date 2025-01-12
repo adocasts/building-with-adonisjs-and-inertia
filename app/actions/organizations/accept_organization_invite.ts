@@ -18,7 +18,11 @@ export default class AcceptOrganizationInvite {
     }
 
     if (invite.acceptedAt || invite.canceledAt) {
-      throw new UnauthorizedException('This invitation is no longer valid')
+      return {
+        invite: null,
+        state: 'errorsBag',
+        message: 'This invitation is no longer valid',
+      }
     }
 
     await db.transaction(async (trx) => {
@@ -39,6 +43,7 @@ export default class AcceptOrganizationInvite {
 
     return {
       invite,
+      state: 'success',
       message: `Invitation successfully accepted`,
     }
   }
