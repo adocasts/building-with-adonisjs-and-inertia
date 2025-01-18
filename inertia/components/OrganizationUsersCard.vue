@@ -40,7 +40,16 @@ function getRoleName(roleId: number) {
             <TableCell>
               {{ getRoleName(member.meta.pivot_role_id) }}
             </TableCell>
-            <TableCell></TableCell>
+            <TableCell>
+              <Link
+                :href="`/settings/organization/user/${member.id}`"
+                method="delete"
+                class="text-red-500"
+                preserve-scroll
+              >
+                Remove
+              </Link>
+            </TableCell>
           </TableRow>
         </TableBody>
       </Table>

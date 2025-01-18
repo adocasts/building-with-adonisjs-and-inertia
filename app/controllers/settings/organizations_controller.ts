@@ -1,6 +1,7 @@
 import CancelOrganizationInvite from '#actions/organizations/cancel_organization_invite'
 import GetOrganizationPendingInvites from '#actions/organizations/get_organization_pending_invites'
 import GetOrganizationUsers from '#actions/organizations/get_organization_users'
+import RemoveOrganizationUser from '#actions/organizations/remove_organization_user'
 import SendOrganizationInvite from '#actions/organizations/send_organization_invite'
 import OrganizationInviteDto from '#dtos/organization_invite'
 import RoleDto from '#dtos/role'
@@ -57,5 +58,14 @@ export default class OrganizationsController {
     return response.redirect().back()
   }
 
-  async removeUser({}: HttpContext) {}
+  async removeUser({ response, organization, params, session }: HttpContext) {
+    await RemoveOrganizationUser.handle({
+      organization,
+      removeUserId: params.id,
+    })
+
+    session.flash('success', 'member has been successfully removed')
+
+    return response.redirect().back()
+  }
 }
