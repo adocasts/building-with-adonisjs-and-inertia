@@ -85,5 +85,6 @@ router.group(() => {
   //* Settings (Organization)
   router.get('/settings/organization', [SettingsOrganizationsController, 'index']).as('settings.organization.index')
   router.post('/settings/organization/invite', [SettingsOrganizationsController, 'inviteUser']).as('settings.organization.invite')
+  router.delete('/settings/organization/invite/:id', [SettingsOrganizationsController, 'cancelInvite']).as('settings.organization.invite.cancel')
 
 }).use([middleware.auth(), middleware.organization()])

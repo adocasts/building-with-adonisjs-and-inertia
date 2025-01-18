@@ -47,7 +47,16 @@ function getRoleName(roleId: number) {
           <TableRow v-for="invite in invites" :key="invite.id">
             <TableCell>{{ invite.email }}</TableCell>
             <TableCell>{{ getRoleName(invite.roleId) }}</TableCell>
-            <TableCell></TableCell>
+            <TableCell>
+              <Link
+                :href="`/settings/organization/invite/${invite.id}`"
+                method="delete"
+                class="text-red-500"
+                preserve-scroll
+              >
+                Cancel Invite
+              </Link>
+            </TableCell>
           </TableRow>
           <TableRow v-if="!invites?.length">
             <TableCell colspan="3">

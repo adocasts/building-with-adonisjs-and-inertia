@@ -1,3 +1,4 @@
+import CancelOrganizationInvite from '#actions/organizations/cancel_organization_invite'
 import GetOrganizationPendingInvites from '#actions/organizations/get_organization_pending_invites'
 import GetOrganizationUsers from '#actions/organizations/get_organization_users'
 import SendOrganizationInvite from '#actions/organizations/send_organization_invite'
@@ -44,7 +45,17 @@ export default class OrganizationsController {
     return response.redirect().back()
   }
 
-  async cancelInvite({}: HttpContext) {}
+  async cancelInvite({ response, organization, params, session, auth }: HttpContext) {
+    await CancelOrganizationInvite.handle({
+      organization,
+      canceledByUserId: auth.use('web').user!.id,
+      inviteId: params.id,
+    })
+
+    session.flash('success', 'The invitation has been canceled')
+
+    return response.redirect().back()
+  }
 
   async removeUser({}: HttpContext) {}
 }

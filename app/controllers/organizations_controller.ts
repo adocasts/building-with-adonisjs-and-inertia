@@ -86,8 +86,6 @@ export default class OrganizationsController {
       user,
     })
 
-    console.log({ result })
-
     session.forget('invite_id')
     session.flash(result.state, result.message)
 
