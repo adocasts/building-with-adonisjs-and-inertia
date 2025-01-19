@@ -1,6 +1,7 @@
 <script setup lang="ts">
 import RoleDto from '#dtos/role'
 import UserDto from '#dtos/user'
+import { RefreshCcw } from 'lucide-vue-next'
 
 const props = defineProps<{ users: UserDto[]; user: UserDto; roles: RoleDto[] }>()
 
@@ -12,8 +13,20 @@ function getRoleName(roleId: number) {
 <template>
   <Card>
     <CardHeader>
-      <CardTitle>Organization Members</CardTitle>
-      <CardDescription>Members of your organization.</CardDescription>
+      <div class="flex justify-between">
+        <div>
+          <CardTitle>Organization Members</CardTitle>
+          <CardDescription>Members of your organization.</CardDescription>
+        </div>
+        <div>
+          <Button variant="ghost" size="sm" as-child>
+            <Link :only="['users']" preserve-scroll>
+              <RefreshCcw class="w-3 h-3 mr-2" />
+              Refresh
+            </Link>
+          </Button>
+        </div>
+      </div>
     </CardHeader>
 
     <CardContent>
@@ -45,6 +58,7 @@ function getRoleName(roleId: number) {
                 :href="`/settings/organization/user/${member.id}`"
                 method="delete"
                 class="text-red-500"
+                as="button"
                 preserve-scroll
               >
                 Remove

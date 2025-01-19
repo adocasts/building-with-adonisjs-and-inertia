@@ -3,7 +3,7 @@ import OrganizationInviteDto from '#dtos/organization_invite'
 import RoleDto from '#dtos/role'
 import Roles from '#enums/roles'
 import { useForm } from '@inertiajs/vue3'
-import { Loader } from 'lucide-vue-next'
+import { Loader, RefreshCcw } from 'lucide-vue-next'
 
 const props = defineProps<{
   invites: OrganizationInviteDto[]
@@ -28,10 +28,22 @@ function getRoleName(roleId: number) {
 <template>
   <Card>
     <CardHeader>
-      <CardTitle>Pending Organization Invitations</CardTitle>
-      <CardDescription>
-        The following users have been invited to your organization.
-      </CardDescription>
+      <div class="flex justify-between">
+        <div>
+          <CardTitle>Pending Organization Invitations</CardTitle>
+          <CardDescription>
+            The following users have been invited to your organization.
+          </CardDescription>
+        </div>
+        <div>
+          <Button variant="ghost" size="sm" as-child>
+            <Link :only="['invites', 'roles']" preserve-scroll>
+              <RefreshCcw class="w-3 h-3 mr-2" />
+              Refresh
+            </Link>
+          </Button>
+        </div>
+      </div>
     </CardHeader>
 
     <CardContent>
@@ -52,6 +64,7 @@ function getRoleName(roleId: number) {
                 :href="`/settings/organization/invite/${invite.id}`"
                 method="delete"
                 class="text-red-500"
+                as="button"
                 preserve-scroll
               >
                 Cancel Invite
