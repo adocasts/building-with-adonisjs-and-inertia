@@ -16,6 +16,7 @@ import router from '@adonisjs/core/services/router'
 /* prettier-ignore-start */
 /* eslint-disable */
 
+router.where('id', router.matchers.number())
 
 router.group(() => {
   

@@ -1,8 +1,11 @@
+import GetOrganizationAbilities from '#actions/abilities/get_organization_abilities'
 import AcceptOrganizationInvite from '#actions/organizations/accept_organization_invite'
 import DestroyOrganization from '#actions/organizations/destroy_organization'
+import GetOrganizationUserRoleId from '#actions/organizations/get_organization_user_role_id'
 import SetActiveOrganization from '#actions/organizations/http/set_active_organization'
 import StoreOrganization from '#actions/organizations/store_organization'
 import UpdateOrganization from '#actions/organizations/update_organization'
+import ForbiddenException from '#exceptions/forbidden_exception'
 import OrganizationInvite from '#models/organization_invite'
 import User from '#models/user'
 import { organizationValidator } from '#validators/organization'
@@ -45,6 +48,15 @@ export default class OrganizationsController {
    * Handle form submission for the edit action
    */
   async update({ params, request, response, auth, session }: HttpContext) {
+    const roleId = await GetOrganizationUserRoleId.handle({
+      organizationId: params.id,
+      userId: auth.use('web').user!.id,
+    })
+
+    if (!GetOrganizationAbilities.canEdit(roleId)) {
+      throw new ForbiddenException('You are not authorized to edit this organization')
+    }
+
     const data = await request.validateUsing(organizationValidator)
 
     await UpdateOrganization.handle({
@@ -96,6 +108,15 @@ export default class OrganizationsController {
    * Delete record
    */
   async destroy({ params, response, session, auth }: HttpContext) {
+    const roleId = await GetOrganizationUserRoleId.handle({
+      organizationId: params.id,
+      userId: auth.use('web').user!.id,
+    })
+
+    if (!GetOrganizationAbilities.canDestroy(roleId)) {
+      throw new ForbiddenException('You are not authorized to delete this organization')
+    }
+
     const organization = await DestroyOrganization.handle({
       user: auth.user!,
       id: params.id,

@@ -6,6 +6,7 @@ import SendOrganizationInvite from '#actions/organizations/send_organization_inv
 import OrganizationInviteDto from '#dtos/organization_invite'
 import RoleDto from '#dtos/role'
 import UserDto from '#dtos/user'
+import ForbiddenException from '#exceptions/forbidden_exception'
 import Role from '#models/role'
 import { withOrganizationMetaData } from '#validators/helpers/organizations'
 import { organizationInviteValidator } from '#validators/organization'
@@ -29,7 +30,11 @@ export default class OrganizationsController {
     })
   }
 
-  async inviteUser({ request, response, organization, session, auth }: HttpContext) {
+  async inviteUser({ request, response, organization, session, auth, can }: HttpContext) {
+    if (!can.organization.manageUsers) {
+      throw new ForbiddenException('You are not authorized to invite users')
+    }
+
     const data = await request.validateUsing(
       organizationInviteValidator,
       withOrganizationMetaData(organization.id)
@@ -46,7 +51,11 @@ export default class OrganizationsController {
     return response.redirect().back()
   }
 
-  async cancelInvite({ response, organization, params, session, auth }: HttpContext) {
+  async cancelInvite({ response, organization, params, session, auth, can }: HttpContext) {
+    if (!can.organization.manageUsers) {
+      throw new ForbiddenException('You are not authorized to cancel invitations')
+    }
+
     await CancelOrganizationInvite.handle({
       organization,
       canceledByUserId: auth.use('web').user!.id,
@@ -58,7 +67,13 @@ export default class OrganizationsController {
     return response.redirect().back()
   }
 
-  async removeUser({ response, organization, params, session }: HttpContext) {
+  async removeUser({ response, organization, params, session, can, auth }: HttpContext) {
+    const user = auth.use('web').user!
+
+    if (!can.organization.manageUsers && params.id !== user.id) {
+      throw new ForbiddenException('You are not authorized to remove users')
+    }
+
     await RemoveOrganizationUser.handle({
       organization,
       removeUserId: params.id,

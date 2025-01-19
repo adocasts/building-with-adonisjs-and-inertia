@@ -1,4 +1,5 @@
 import GetAbilities, { Abilities } from '#actions/abilities/get_abilities'
+import GetOrganizationUserRoleId from '#actions/organizations/get_organization_user_role_id'
 import GetActiveOrganization from '#actions/organizations/http/get_active_organization'
 import { activeCookieName } from '#config/organization'
 import OrganizationDto from '#dtos/organization'
@@ -6,7 +7,6 @@ import Organization from '#models/organization'
 import { inject } from '@adonisjs/core'
 import type { HttpContext } from '@adonisjs/core/http'
 import type { NextFn } from '@adonisjs/core/types/http'
-import db from '@adonisjs/lucid/services/db'
 
 @inject()
 export default class OrganizationMiddleware {
@@ -19,12 +19,10 @@ export default class OrganizationMiddleware {
       ctx.organizationId = ctx.request.cookie(activeCookieName)
 
       const organization = await this.getActiveOrganization.handle()
-      const { roleId } = await db
-        .from('organization_users')
-        .where('organization_id', ctx.organizationId!)
-        .where('user_id', user.id)
-        .select('role_id as roleId')
-        .firstOrFail()
+      const roleId = await GetOrganizationUserRoleId.handle({
+        organizationId: organization.id,
+        userId: user.id,
+      })
 
       ctx.organization = organization
       ctx.roleId = roleId

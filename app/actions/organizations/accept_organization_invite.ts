@@ -1,4 +1,4 @@
-import UnauthorizedException from '#exceptions/unauthorized_exception'
+import ForbiddenException from '#exceptions/forbidden_exception'
 import OrganizationInvite from '#models/organization_invite'
 import User from '#models/user'
 import db from '@adonisjs/lucid/services/db'
@@ -14,7 +14,7 @@ export default class AcceptOrganizationInvite {
     const invite = await OrganizationInvite.findOrFail(inviteId)
 
     if (invite.email !== user.email) {
-      throw new UnauthorizedException('Your email does not match the invitation')
+      throw new ForbiddenException('Your email does not match the invitation')
     }
 
     if (invite.acceptedAt || invite.canceledAt) {
