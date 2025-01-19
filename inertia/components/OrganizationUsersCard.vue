@@ -1,9 +1,15 @@
 <script setup lang="ts">
+import { Abilities } from '#actions/abilities/get_abilities'
 import RoleDto from '#dtos/role'
 import UserDto from '#dtos/user'
 import { RefreshCcw } from 'lucide-vue-next'
 
-const props = defineProps<{ users: UserDto[]; user: UserDto; roles: RoleDto[] }>()
+const props = defineProps<{
+  users: UserDto[]
+  user: UserDto
+  roles: RoleDto[]
+  can: Abilities
+}>()
 
 function getRoleName(roleId: number) {
   return props.roles.find((role) => role.id === roleId)?.name
@@ -55,6 +61,7 @@ function getRoleName(roleId: number) {
             </TableCell>
             <TableCell>
               <Link
+                v-if="can.organization.manageUsers || member.id === user.id"
                 :href="`/settings/organization/user/${member.id}`"
                 method="delete"
                 class="text-red-500"

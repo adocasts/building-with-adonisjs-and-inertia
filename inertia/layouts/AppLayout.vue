@@ -1,4 +1,5 @@
 <script setup lang="ts">
+import { Abilities } from '#actions/abilities/get_abilities'
 import OrganizationDto from '#dtos/organization'
 import UserDto from '#dtos/user'
 import { Link } from '@inertiajs/vue3'
@@ -9,6 +10,7 @@ const props = defineProps<{
   organizations: OrganizationDto[]
   user: UserDto
   messages: Record<string, string | Record<string, string>>
+  can: Abilities
 }>()
 </script>
 
@@ -17,7 +19,7 @@ const props = defineProps<{
     <header
       class="sticky top-0 z-50 flex h-16 items-center gap-4 border-b bg-background px-4 md:px-6"
     >
-      <Navigation v-bind="props" />
+      <Navigation v-bind="props" :can="can" />
 
       <!-- User Panel -->
       <div class="flex flex-1 items-center justify-end">

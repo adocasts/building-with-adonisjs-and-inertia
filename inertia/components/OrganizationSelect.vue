@@ -1,6 +1,7 @@
 <script setup lang="ts">
+import { Abilities } from '#actions/abilities/get_abilities'
 import OrganizationDto from '#dtos/organization'
-import { router, useForm } from '@inertiajs/vue3'
+import { router } from '@inertiajs/vue3'
 import { ChevronsUpDown } from 'lucide-vue-next'
 import { ref, watchEffect } from 'vue'
 import { useResourceActions } from '~/composables/resource_actions'
@@ -8,6 +9,7 @@ import { useResourceActions } from '~/composables/resource_actions'
 const props = defineProps<{
   organization: OrganizationDto
   organizations: OrganizationDto[]
+  can: Abilities
 }>()
 
 const organizationId = ref(props.organization.id.toString())
@@ -45,12 +47,15 @@ function onOrganizationChange(activeId: string) {
         </DropdownMenuRadioItem>
       </DropdownMenuRadioGroup>
 
-      <DropdownMenuSeparator />
+      <DropdownMenuSeparator v-if="can.organization.edit || can.organization.destroy" />
 
-      <DropdownMenuItem @click="dialog.open(organization, { name: organization.name })">
+      <DropdownMenuItem
+        v-if="can.organization.edit"
+        @click="dialog.open(organization, { name: organization.name })"
+      >
         Edit {{ organization.name }}
       </DropdownMenuItem>
-      <DropdownMenuItem @click="destroy.open(organization)">
+      <DropdownMenuItem v-if="can.organization.destroy" @click="destroy.open(organization)">
         Delete {{ organization.name }}
       </DropdownMenuItem>
 

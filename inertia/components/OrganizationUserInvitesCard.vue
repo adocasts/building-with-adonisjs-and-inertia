@@ -1,4 +1,5 @@
 <script setup lang="ts">
+import { Abilities } from '#actions/abilities/get_abilities'
 import OrganizationInviteDto from '#dtos/organization_invite'
 import RoleDto from '#dtos/role'
 import Roles from '#enums/roles'
@@ -8,6 +9,7 @@ import { Loader, RefreshCcw } from 'lucide-vue-next'
 const props = defineProps<{
   invites: OrganizationInviteDto[]
   roles: RoleDto[]
+  can: Abilities
 }>()
 
 const inviteForm = useForm({
@@ -52,14 +54,14 @@ function getRoleName(roleId: number) {
           <TableRow>
             <TableHead>Email</TableHead>
             <TableHead>Role</TableHead>
-            <TableHead></TableHead>
+            <TableHead v-if="can.organization.manageUsers"></TableHead>
           </TableRow>
         </TableHeader>
         <TableBody>
           <TableRow v-for="invite in invites" :key="invite.id">
             <TableCell>{{ invite.email }}</TableCell>
             <TableCell>{{ getRoleName(invite.roleId) }}</TableCell>
-            <TableCell>
+            <TableCell v-if="can.organization.manageUsers">
               <Link
                 :href="`/settings/organization/invite/${invite.id}`"
                 method="delete"
@@ -79,7 +81,7 @@ function getRoleName(roleId: number) {
         </TableBody>
       </Table>
 
-      <div class="p-4 rounded bg-slate-100 mt-8">
+      <div v-if="can.organization.manageUsers" class="p-4 rounded bg-slate-100 mt-8">
         <h4 class="font-bold">Invite New Member</h4>
         <div class="text-slate-400 text-sm mb-3">Invite a new member to your organization.</div>
 
