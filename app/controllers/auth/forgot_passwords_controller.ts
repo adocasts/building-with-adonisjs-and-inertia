@@ -23,10 +23,12 @@ export default class ForgotPasswordsController {
     return response.redirect().back()
   }
 
-  async reset({ params, inertia }: HttpContext) {
+  async reset({ params, inertia, response }: HttpContext) {
     const { isValid, user } = await VerifyPasswordResetToken.handle({
       encryptedValue: params.value,
     })
+
+    response.header('Referrer-Policy', 'no-referrer')
 
     return inertia.render('auth/forgot_password/reset', {
       value: params.value,
@@ -35,5 +37,14 @@ export default class ForgotPasswordsController {
     })
   }
 
-  async update({}: HttpContext) {}
+  async update({ request, response, session, auth }: HttpContext) {
+    const data = await request.validateUsing(passwordResetValidator)
+    const user = await ResetPassword.handle({ data })
+
+    await auth.use('web').login(user)
+
+    session.flash('success', 'Your password has been updated')
+
+    return response.redirect().toRoute('courses.index')
+  }
 }
