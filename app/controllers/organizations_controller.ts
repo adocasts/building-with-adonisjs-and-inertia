@@ -35,13 +35,13 @@ export default class OrganizationsController {
 
     this.setActiveOrganization.handle({ id: organization.id })
 
-    return response.redirect().toPath('/')
+    return response.redirect().toRoute('courses.index')
   }
 
   async active({ response, params }: HttpContext) {
     this.setActiveOrganization.handle({ id: params.id })
 
-    return response.redirect().toPath('/')
+    return response.redirect().toRoute('courses.index')
   }
 
   /**
@@ -124,6 +124,6 @@ export default class OrganizationsController {
 
     session.flash('success', `Your ${organization.name} has been deleted`)
 
-    return response.redirect().toPath('/')
+    return response.redirect().toRoute('courses.index')
   }
 }

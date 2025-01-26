@@ -43,6 +43,6 @@ export default class ForgotPasswordsController {
 
     session.flash('success', 'Your password has been updated')
 
-    return response.redirect().toPath('/')
+    return response.redirect().toRoute('courses.index')
   }
 }

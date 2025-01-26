@@ -6,10 +6,7 @@ export default {
   safelist: ['dark'],
   prefix: '',
 
-  content: [
-    './inertia/{pages,components,app,layouts}/**/*.{ts,tsx,vue}',
-    './resources/views/**/*.edge',
-  ],
+  content: ['./inertia/{pages,components,app,layouts}/**/*.{ts,tsx,vue}'],
 
   theme: {
     container: {

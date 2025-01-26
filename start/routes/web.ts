@@ -18,9 +18,10 @@ import router from '@adonisjs/core/services/router'
 
 router.where('id', router.matchers.number())
 
+router.on('/').render('pages/landing').as('landing')
+
 router.group(() => {
   
-  router.on('/').renderInertia('home', { version: 6 }).use(middleware.organization())
   router.get('/organizations/create', [OrganizationsController, 'create']).as('organizations.create')
   router.post('/organizations', [OrganizationsController, 'store']).as('organizations.store')
   router.put('/organizations/:id', [OrganizationsController, 'update']).as('organizations.update')
