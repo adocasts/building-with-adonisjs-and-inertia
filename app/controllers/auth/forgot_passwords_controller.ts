@@ -35,14 +35,5 @@ export default class ForgotPasswordsController {
     })
   }
 
-  async update({ request, response, session, auth }: HttpContext) {
-    const data = await request.validateUsing(passwordResetValidator)
-    const user = await ResetPassword.handle({ data })
-
-    await auth.use('web').login(user)
-
-    session.flash('success', 'Your password has been updated')
-
-    return response.redirect().toPath('/')
-  }
+  async update({}: HttpContext) {}
 }
