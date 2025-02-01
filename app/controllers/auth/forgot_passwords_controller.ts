@@ -1,7 +1,9 @@
+import WebLogin from '#actions/auth/http/web_login'
 import ResetPassword from '#actions/auth/password_reset/reset_password'
 import TrySendPasswordResetEmail from '#actions/auth/password_reset/try_send_password_reset_email'
 import VerifyPasswordResetToken from '#actions/auth/password_reset/verify_password_reset_token'
 import { passwordResetSendValidator, passwordResetValidator } from '#validators/auth'
+import { inject } from '@adonisjs/core'
 import type { HttpContext } from '@adonisjs/core/http'
 
 export default class ForgotPasswordsController {
@@ -37,11 +39,13 @@ export default class ForgotPasswordsController {
     })
   }
 
-  async update({ request, response, session, auth }: HttpContext) {
+  @inject()
+  async update({ request, response, session, auth }: HttpContext, webLogin: WebLogin) {
     const data = await request.validateUsing(passwordResetValidator)
     const user = await ResetPassword.handle({ data })
 
     await auth.use('web').login(user)
+    await webLogin.clearRateLimits(user.email)
 
     session.flash('success', 'Your password has been updated')
 

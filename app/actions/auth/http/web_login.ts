@@ -14,16 +14,18 @@ type Params = {
 export default class WebLogin {
   constructor(protected ctx: HttpContext) {}
 
-  async handle({ data }: Params) {
-    const limit = limiter.use({
+  get limit() {
+    return limiter.use({
       requests: 3,
       duration: '3 hours',
       blockDuration: '24 hours',
     })
+  }
 
-    const key = `login_${this.ctx.request.ip()}_${data.email}`
+  async handle({ data }: Params) {
+    const key = this.getRateKey(data.email)
 
-    const [error, user] = await limit.penalize(key, () => {
+    const [error, user] = await this.limit.penalize(key, () => {
       return User.verifyCredentials(data.email, data.password)
     })
 
@@ -39,6 +41,14 @@ export default class WebLogin {
     await this.#checkForOrganizationInvite(user)
 
     return user
+  }
+
+  getRateKey(email: string) {
+    return `login_${this.ctx.request.ip()}_${email}`
+  }
+
+  async clearRateLimits(email: string) {
+    return this.limit.delete(this.getRateKey(email))
   }
 
   async #checkForOrganizationInvite(user: User) {
