@@ -12,7 +12,11 @@ export default class LoginController {
   async store({ request, response }: HttpContext, webLogin: WebLogin) {
     const data = await request.validateUsing(loginValidator)
 
-    await webLogin.handle({ data })
+    const user = await webLogin.handle({ data })
+
+    if (!user) {
+      return response.redirect().back()
+    }
 
     return response.redirect().toRoute('courses.index')
   }
