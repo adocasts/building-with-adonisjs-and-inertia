@@ -38,8 +38,12 @@ export default class OrganizationsController {
     return response.redirect().toRoute('courses.index')
   }
 
-  async active({ response, params }: HttpContext) {
+  async active({ request, response, params }: HttpContext) {
     this.setActiveOrganization.handle({ id: params.id })
+    
+    if (!request.header('X-Inertia')) {
+      return response.noContent()
+    }
 
     return response.redirect().toRoute('courses.index')
   }
