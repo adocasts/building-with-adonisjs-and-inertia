@@ -108,7 +108,7 @@ const props = defineProps<{
   </Sheet>
 </template>
 
-<style scope>
+<style scoped>
 .desktop-link {
   @apply text-muted-foreground transition-colors hover:text-foreground;
 
