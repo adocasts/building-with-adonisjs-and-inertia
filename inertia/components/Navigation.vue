@@ -1,13 +1,19 @@
 <script lang="ts" setup>
 import { Abilities } from '#actions/abilities/get_abilities'
 import OrganizationDto from '#dtos/organization'
+import { router } from '@inertiajs/vue3'
 import { Menu, Slash, Route } from 'lucide-vue-next'
+import { onMounted } from 'vue'
 
 const props = defineProps<{
   organization: OrganizationDto
   organizations: OrganizationDto[]
   can: Abilities
 }>()
+
+onMounted(() => {
+  router.prefetch('/access-levels', { method: 'get' }, { cacheFor: '5s' })
+})
 </script>
 
 <template>
@@ -27,6 +33,8 @@ const props = defineProps<{
       href="/courses"
       class="desktop-link"
       :class="{ active: $page.url.startsWith('/courses') }"
+      prefetch
+      :cache-for="['5s', '1m']"
     >
       Courses
     </Link>
@@ -35,6 +43,8 @@ const props = defineProps<{
       href="/difficulties"
       class="desktop-link"
       :class="{ active: $page.url.startsWith('/difficulties') }"
+      :prefetch="['click', 'mount']"
+      cache-for="5s"
     >
       Difficulties
     </Link>
@@ -43,6 +53,7 @@ const props = defineProps<{
       href="/statuses"
       class="desktop-link"
       :class="{ active: $page.url.startsWith('/statuses') }"
+      prefetch="mount"
     >
       Statuses
     </Link>
@@ -51,6 +62,7 @@ const props = defineProps<{
       href="/access-levels"
       class="desktop-link"
       :class="{ active: $page.url.startsWith('/access-levels') }"
+      prefetch
     >
       Access Levels
     </Link>
