@@ -3,7 +3,7 @@ import { Abilities } from '#actions/abilities/get_abilities'
 import OrganizationInviteDto from '#dtos/organization_invite'
 import RoleDto from '#dtos/role'
 import Roles from '#enums/roles'
-import { useForm } from '@inertiajs/vue3'
+import { useForm, Deferred } from '@inertiajs/vue3'
 import { Loader, RefreshCcw } from 'lucide-vue-next'
 
 const props = defineProps<{
@@ -58,26 +58,32 @@ function getRoleName(roleId: number) {
           </TableRow>
         </TableHeader>
         <TableBody>
-          <TableRow v-for="invite in invites" :key="invite.id">
-            <TableCell>{{ invite.email }}</TableCell>
-            <TableCell>{{ getRoleName(invite.roleId) }}</TableCell>
-            <TableCell v-if="can.organization.manageUsers">
-              <Link
-                :href="`/settings/organization/invite/${invite.id}`"
-                method="delete"
-                class="text-red-500"
-                as="button"
-                preserve-scroll
-              >
-                Cancel Invite
-              </Link>
-            </TableCell>
-          </TableRow>
-          <TableRow v-if="!invites?.length">
-            <TableCell colspan="3">
-              <div class="text-center text-slate-600">No pending invites.</div>
-            </TableCell>
-          </TableRow>
+          <Deferred data="invites">
+            <template #fallback>
+              <div>Loading ...</div>
+            </template>
+
+            <TableRow v-for="invite in invites" :key="invite.id">
+              <TableCell>{{ invite.email }}</TableCell>
+              <TableCell>{{ getRoleName(invite.roleId) }}</TableCell>
+              <TableCell v-if="can.organization.manageUsers">
+                <Link
+                  :href="`/settings/organization/invite/${invite.id}`"
+                  method="delete"
+                  class="text-red-500"
+                  as="button"
+                  preserve-scroll
+                >
+                  Cancel Invite
+                </Link>
+              </TableCell>
+            </TableRow>
+            <TableRow v-if="!invites?.length">
+              <TableCell colspan="3">
+                <div class="text-center text-slate-600">No pending invites.</div>
+              </TableCell>
+            </TableRow>
+          </Deferred>
         </TableBody>
       </Table>
 

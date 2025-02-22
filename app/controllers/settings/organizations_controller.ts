@@ -11,18 +11,20 @@ import Role from '#models/role'
 import { withOrganizationMetaData } from '#validators/helpers/organizations'
 import { organizationInviteValidator } from '#validators/organization'
 import type { HttpContext } from '@adonisjs/core/http'
+import { setTimeout } from 'node:timers/promises'
 
 export default class OrganizationsController {
   async index({ inertia, organization }: HttpContext) {
     return inertia.render('settings/organization', {
-      users: async () => {
+      users: inertia.defer(async () => {
         const users = await GetOrganizationUsers.handle({ organization })
         return UserDto.fromArray(users)
-      },
-      invites: async () => {
+      }),
+      invites: inertia.defer(async () => {
+        await setTimeout(5_000)
         const pendingInvites = await GetOrganizationPendingInvites.handle({ organization })
         return OrganizationInviteDto.fromArray(pendingInvites)
-      },
+      }, 'invites'),
       roles: async () => {
         const roles = await Role.query().orderBy('name')
         return RoleDto.fromArray(roles)

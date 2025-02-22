@@ -4,7 +4,7 @@ import OrganizationDto from '#dtos/organization'
 import OrganizationInviteDto from '#dtos/organization_invite'
 import RoleDto from '#dtos/role'
 import UserDto from '#dtos/user'
-import { usePoll } from '@inertiajs/vue3'
+// import { usePoll } from '@inertiajs/vue3'
 
 defineProps<{
   organization: OrganizationDto
@@ -15,9 +15,9 @@ defineProps<{
   can: Abilities
 }>()
 
-usePoll(5_000, {
-  only: ['users', 'invites'],
-})
+// usePoll(5_000, {
+//   only: ['users', 'invites'],
+// })
 </script>
 
 <template>
