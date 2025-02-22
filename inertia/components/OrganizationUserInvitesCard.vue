@@ -3,7 +3,7 @@ import { Abilities } from '#actions/abilities/get_abilities'
 import OrganizationInviteDto from '#dtos/organization_invite'
 import RoleDto from '#dtos/role'
 import Roles from '#enums/roles'
-import { useForm, Deferred } from '@inertiajs/vue3'
+import { useForm, Deferred, WhenVisible } from '@inertiajs/vue3'
 import { Loader, RefreshCcw } from 'lucide-vue-next'
 
 const props = defineProps<{
@@ -58,7 +58,7 @@ function getRoleName(roleId: number) {
           </TableRow>
         </TableHeader>
         <TableBody>
-          <Deferred data="invites">
+          <WhenVisible data="invites" :buffer="150" always>
             <template #fallback>
               <div>Loading ...</div>
             </template>
@@ -83,7 +83,7 @@ function getRoleName(roleId: number) {
                 <div class="text-center text-slate-600">No pending invites.</div>
               </TableCell>
             </TableRow>
-          </Deferred>
+          </WhenVisible>
         </TableBody>
       </Table>
 

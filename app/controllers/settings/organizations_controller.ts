@@ -20,11 +20,11 @@ export default class OrganizationsController {
         const users = await GetOrganizationUsers.handle({ organization })
         return UserDto.fromArray(users)
       }),
-      invites: inertia.defer(async () => {
+      invites: inertia.optional(async () => {
         await setTimeout(5_000)
         const pendingInvites = await GetOrganizationPendingInvites.handle({ organization })
         return OrganizationInviteDto.fromArray(pendingInvites)
-      }, 'invites'),
+      }),
       roles: async () => {
         const roles = await Role.query().orderBy('name')
         return RoleDto.fromArray(roles)
