@@ -6,16 +6,19 @@ import UpdateCourse from '#actions/courses/update_course'
 import UpdateCourseTag from '#actions/courses/update_course_tag'
 import CourseDto from '#dtos/course'
 import ModuleDto from '#dtos/module'
-import { coursePatchTagValidator, courseValidator } from '#validators/course'
+import { coursePaginateValidator, coursePatchTagValidator, courseValidator } from '#validators/course'
 import { withOrganizationMetaData } from '#validators/helpers/organizations'
 import type { HttpContext } from '@adonisjs/core/http'
 
 export default class CoursesController {
-  async index({ inertia, organization }: HttpContext) {
+  async index({ inertia, request, organization }: HttpContext) {
+    const { page, perPage } = await request.validateUsing(coursePaginateValidator)
     const courses = await GetCourses.handle({ organization })
+      .paginate(page ?? 1, perPage ?? 5)
 
     return inertia.render('courses/index', {
-      courses: CourseDto.fromArray(courses),
+      courses: inertia.merge(() => CourseDto.fromArray(Array.from(courses))),
+      coursesMeta: courses.getMeta()
     })
   }
 

@@ -1,17 +1,32 @@
 <script setup lang="ts">
-import CourseDto from '#dtos/course';
-import OrganizationDto from '#dtos/organization';
-import { Link } from '@inertiajs/vue3';
-import { EllipsisVertical, Plus } from 'lucide-vue-next';
-import { ref, watchEffect } from 'vue';
+import CourseDto from '#dtos/course'
+import OrganizationDto from '#dtos/organization'
+import { SimplePaginatorDtoMetaContract } from '@adocasts.com/dto/types'
+import { Link, WhenVisible } from '@inertiajs/vue3'
+import { EllipsisVertical, Plus } from 'lucide-vue-next'
+import { computed, ref, watchEffect } from 'vue'
 
 const props = defineProps<{
   organization: OrganizationDto
   courses: CourseDto[]
+  coursesMeta: SimplePaginatorDtoMetaContract
 }>()
 
 const courses = ref(props.courses)
 const actions = ref()
+
+const hasMorePages = computed(() => {
+  const { currentPage, lastPage } = props.coursesMeta
+  return currentPage < lastPage
+})
+
+const whenVisibleParams = computed(() => ({
+  only: ['courses', 'coursesMeta'],
+  preserveUrl: true,
+  data: {
+    page: props.coursesMeta.currentPage + 1,
+  },
+}))
 
 watchEffect(() => (courses.value = props.courses))
 </script>
@@ -64,12 +79,17 @@ watchEffect(() => (courses.value = props.courses))
             </DropdownMenu>
           </TableCell>
         </TableRow>
+        <WhenVisible :params="whenVisibleParams" :always="hasMorePages">
+          <template #fallback>
+            <TableRow>
+              <TableCell colspan="5"> Loading ... </TableCell>
+            </TableRow>
+          </template>
+        </WhenVisible>
       </TableBody>
       <TableBody v-else>
         <TableRow>
-          <TableCell colspan="5" class="text-center">
-            You don't have any courses yet.
-          </TableCell>
+          <TableCell colspan="5" class="text-center"> You don't have any courses yet. </TableCell>
         </TableRow>
       </TableBody>
     </Table>

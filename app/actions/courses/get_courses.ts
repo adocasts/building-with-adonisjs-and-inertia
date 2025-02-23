@@ -5,7 +5,7 @@ type Params = {
 }
 
 export default class GetCourses {
-  static async handle({ organization }: Params) {
+  static handle({ organization }: Params) {
     return organization
       .related('courses')
       .query()
