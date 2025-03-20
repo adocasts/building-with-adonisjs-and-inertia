@@ -12,6 +12,7 @@ export default class DestroyLesson {
 
     await db.transaction(async (trx) => {
       lesson.useTransaction(trx)
+      organization.useTransaction(trx)
 
       await lesson.delete()
       await organization

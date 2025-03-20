@@ -6,7 +6,7 @@ import AuthLayout from '~/layouts/AuthLayout.vue'
 defineOptions({ layout: AuthLayout })
 
 defineProps<{
-  errors: Record<string, string>
+  errors?: Record<string, string>
 }>()
 
 const form = useForm({
@@ -27,10 +27,10 @@ const form = useForm({
   </div>
 
   <form @submit.prevent="form.post('/login')">
-    <Alert v-if="errors.E_INVALID_CREDENTIALS" variant="destructive" class="mb-6">
+    <Alert v-if="errors?.E_INVALID_CREDENTIALS" variant="destructive" class="mb-6">
       <AlertCircle class="w-4 h-4" />
       <AlertTitle>Error</AlertTitle>
-      <AlertDescription>{{ errors.E_INVALID_CREDENTIALS }}</AlertDescription>
+      <AlertDescription>{{ errors?.E_INVALID_CREDENTIALS }}</AlertDescription>
     </Alert>
 
     <div class="grid gap-3">
