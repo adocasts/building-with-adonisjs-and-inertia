@@ -1,18 +1,18 @@
 <script setup lang="ts"></script>
 
 <template>
-  <main class="flex min-h-[calc(100vh_-_theme(spacing.16))] flex-1 flex-col gap-4 p-4 md:gap-8">
+  <main class="flex flex-col flex-1 gap-4 md:gap-8 p-4 min-h-[calc(100vh_-_theme(spacing.16))]">
     <div class="mx-auto w-full max-w-6xl">
-      <h1 class="text-3xl font-semibold">Settings</h1>
+      <h1 class="font-semibold text-3xl">Settings</h1>
     </div>
 
     <div
-      class="mx-auto grid w-full max-w-6xl items-start gap-6 md:grid-cols-[180px_1fr] lg:grid-cols-[250px_1fr]"
+      class="items-start gap-6 grid md:grid-cols-[180px_1fr] lg:grid-cols-[250px_1fr] mx-auto w-full max-w-6xl"
     >
-      <nav class="grid text-sm text-muted-foreground -mx-2">
+      <nav class="grid -mx-2 text-muted-foreground text-sm">
         <Link
           href="/settings/profile"
-          class="link"
+          class="settings-link"
           :class="{ active: $page.component === 'settings/profile' }"
         >
           Profile
@@ -20,7 +20,7 @@
 
         <Link
           href="/settings/account"
-          class="link"
+          class="settings-link"
           :class="{ active: $page.component === 'settings/account' }"
         >
           Account
@@ -28,26 +28,16 @@
 
         <Link
           href="/settings/organization"
-          class="link"
+          class="settings-link"
           :class="{ active: $page.component === 'settings/organization' }"
         >
           Organization
         </Link>
       </nav>
 
-      <div class="grid gap-6">
+      <div class="gap-6 grid">
         <slot />
       </div>
     </div>
   </main>
 </template>
-
-<style scoped>
-.link {
-  @apply font-semibold p-2 rounded text-primary m-px;
-
-  &.active {
-    @apply m-0 border bg-white shadow-sm;
-  }
-}
-</style>

@@ -1,3 +1,4 @@
+@config "../../tailwind.config.js";
 @tailwind base;
 @tailwind components;
 @tailwind utilities;
@@ -74,5 +75,29 @@
   }
   body {
     @apply bg-background text-foreground;
+  }
+}
+
+.desktop-link {
+  @apply text-muted-foreground hover:text-foreground transition-colors;
+
+  &.active {
+    @apply text-foreground;
+  }
+}
+
+.mobile-link {
+  @apply text-muted-foreground hover:text-foreground;
+
+  &.active {
+    @apply text-foreground;
+  }
+}
+
+.settings-link {
+  @apply m-px p-2 rounded font-semibold text-primary;
+
+  &.active {
+    @apply bg-white shadow-sm m-0 border;
   }
 }

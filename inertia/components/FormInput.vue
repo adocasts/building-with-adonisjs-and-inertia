@@ -3,9 +3,9 @@ import { computed, ref } from 'vue'
 
 const props = withDefaults(
   defineProps<{
-    label: string
+    label?: string
     type?: string
-    modelValue: string | number
+    modelValue?: string | number
     placeholder?: string
     error?: string
     disabled?: boolean
@@ -31,16 +31,16 @@ defineExpose({
 </script>
 
 <template>
-  <div class="grid gap-1">
-    <Label class="grid gap-1">
-      <span>{{ label }}</span>
+  <div class="gap-1 grid">
+    <Label class="gap-1 grid">
+      <span v-if="label">{{ label }}</span>
 
       <slot v-if="type === 'group'" />
-      <div v-else-if="type === 'color'" class="relative w-full items-center">
+      <div v-else-if="type === 'color'" class="relative items-center w-full">
         <input
           v-model="internalValue"
           type="color"
-          class="absolute start-2 inset-y-2 w-6 h-6 rounded"
+          class="absolute inset-y-2 rounded w-6 h-6 start-2"
           :disabled="disabled"
         />
         <Input
