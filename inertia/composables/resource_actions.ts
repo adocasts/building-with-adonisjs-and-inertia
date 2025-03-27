@@ -1,8 +1,9 @@
+import { FormDataConvertible } from '@inertiajs/core'
 import { useForm } from '@inertiajs/vue3'
 import { ref, UnwrapRef } from 'vue'
 
 export function useResourceActions<Resource>() {
-  return <Form extends object>(defaultForm: Form) => {
+  return <Form extends Record<string, FormDataConvertible>>(defaultForm: Form) => {
     interface Actionable {
       isOpen: boolean
       resource?: Resource
