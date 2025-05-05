@@ -21,7 +21,7 @@ router.group(() => {
 
   router.get('/', [ForgotPasswordsController, 'index']).as('index')
   router.post('/', [ForgotPasswordsController, 'send']).as('send')
-  router.get('/reset/:value', [ForgotPasswordsController, 'reset']).as('reset')
+  router.get('/reset/:value?', [ForgotPasswordsController, 'reset']).as('reset')
   router.post('/reset', [ForgotPasswordsController, 'update']).as('update')
 
 })

@@ -5,6 +5,7 @@ import VerifyPasswordResetToken from '#actions/auth/password_reset/verify_passwo
 import { passwordResetSendValidator, passwordResetValidator } from '#validators/auth'
 import { inject } from '@adonisjs/core'
 import type { HttpContext } from '@adonisjs/core/http'
+import { Infer } from '@vinejs/vine/types'
 
 export default class ForgotPasswordsController {
   #sentSessionKey = 'FORGOT_PASSWORD_SENT'
@@ -25,15 +26,16 @@ export default class ForgotPasswordsController {
     return response.redirect().back()
   }
 
-  async reset({ params, inertia, response }: HttpContext) {
+  async reset({ params, inertia, response, session }: HttpContext) {
+    const token = params.value ?? session.flashMessages.get('password_reset_token')
     const { isValid, user } = await VerifyPasswordResetToken.handle({
-      encryptedValue: params.value,
+      encryptedValue: token,
     })
 
+    session.flash('password_reset_token', token)
     response.header('Referrer-Policy', 'no-referrer')
 
     return inertia.render('auth/forgot_password/reset', {
-      value: params.value,
       email: user?.email,
       isValid,
     })
@@ -41,8 +43,22 @@ export default class ForgotPasswordsController {
 
   @inject()
   async update({ request, response, session, auth }: HttpContext, webLogin: WebLogin) {
-    const data = await request.validateUsing(passwordResetValidator)
-    const user = await ResetPassword.handle({ data })
+    let data: Infer<typeof passwordResetValidator>
+    const token = session.flashMessages.get('password_reset_token')
+
+    try {
+      data = await request.validateUsing(passwordResetValidator)
+    } catch (error) {
+      if (error.code === 'E_VALIDATION_ERROR' && 'messages' in error) {
+        session.reflashOnly(['password_reset_token'])
+        session.flashValidationErrors(error)
+        return response.redirect(`/forgot-password/reset`)
+      }
+      throw error
+    }
+
+    
+    const user = await ResetPassword.handle({ data, token })
 
     await auth.use('web').login(user)
     await webLogin.clearRateLimits(user.email)

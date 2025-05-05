@@ -30,7 +30,6 @@ export const passwordResetSendValidator = vine.compile(
 
 export const passwordResetValidator = vine.compile(
   vine.object({
-    value: vine.string(),
     password: vine.string().minLength(8),
   })
 )
