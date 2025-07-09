@@ -2,12 +2,12 @@ import vine from '@vinejs/vine'
 
 export const loginValidator = vine.compile(
   vine.object({
-    email: vine.string().email().normalizeEmail(),
+    email: vine.string().email().toLowerCase().trim(),
     password: vine.string(),
     remember: vine.boolean().optional(),
   })
 )
-export const emailRule = vine.string().maxLength(254).email().normalizeEmail()
+export const emailRule = vine.string().maxLength(254).email().toLowerCase().trim()
 
 export const newEmailRule = emailRule.clone().unique(async (db, value) => {
   const exists = await db.from('users').where('email', value).select('id').first()
@@ -24,7 +24,7 @@ export const registerValidator = vine.compile(
 
 export const passwordResetSendValidator = vine.compile(
   vine.object({
-    email: vine.string().email().normalizeEmail(),
+    email: vine.string().email().toLowerCase().trim(),
   })
 )
 
