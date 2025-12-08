@@ -7,13 +7,10 @@ export default class UserDto extends BaseModelDto {
   declare id: number
   declare fullName: string
   declare email: string
-  declare password: string
   declare createdAt: string
   declare updatedAt: string | null
   declare emailHistories: EmailHistoryDto[]
   declare passwordResetTokens: PasswordResetTokenDto[]
-
-  declare meta: Record<string, any>
 
   constructor(user?: User) {
     super()
@@ -22,11 +19,9 @@ export default class UserDto extends BaseModelDto {
     this.id = user.id
     this.fullName = user.fullName
     this.email = user.email
-    this.password = user.password
     this.createdAt = user.createdAt.toISO()!
     this.updatedAt = user.updatedAt?.toISO()!
     this.emailHistories = EmailHistoryDto.fromArray(user.emailHistories)
     this.passwordResetTokens = PasswordResetTokenDto.fromArray(user.passwordResetTokens)
-    this.meta = user.$extras
   }
 }
